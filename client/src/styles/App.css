@@ -29,7 +29,7 @@
   cursor: not-allowed;
 }
 
-.user-profile {
+.user-homepage {
   background: #282828;
   color: white;
   padding: 30px;
@@ -44,5 +44,11 @@
   padding: 10px; 
   border: 1px solid red; 
   border-radius: 4px;
-  background-color: #ffebee
+  background-color: #f5909f
+}
+
+.url-message {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #666
 }
