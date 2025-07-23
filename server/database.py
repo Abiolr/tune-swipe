@@ -30,11 +30,12 @@ def create_database_tables():
         # Create Users table
         cursor.execute("""
         CREATE TABLE Users (
-            user_id VARCHAR(36) PRIMARY KEY,
-            spotify_id VARCHAR(255) UNIQUE,
+            user_id VARCHAR(255) PRIMARY KEY,
+            spotify_id VARCHAR(255) UNIQUE NOT NULL,
             display_name VARCHAR(255),
             email VARCHAR(255),
-            creation_date DATETIME NOT NULL
+            creation_date DATETIME,
+            last_login DATETIME
         )
         """)
 
