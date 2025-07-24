@@ -1,5 +1,9 @@
+import '../styles/App.css'
+
 export default function Footer () {
     return (
-        <h1>Footer</h1>
+        <footer>
+            <p>&copy; 2025 TuneSwipe.</p>
+        </footer>
     )
 }

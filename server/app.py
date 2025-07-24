@@ -126,14 +126,21 @@ def callback():
             ))
             conn.commit()
 
+            # Get the last login time for this user
+            cursor.execute("""
+                SELECT last_login FROM Users WHERE spotify_id = %s
+            """, (user['id'],))
+            user_data = cursor.fetchone()
+
             # Prepare success redirect
             user_params = {
                 'auth': 'success',
                 'spotify_id': user['id'],
                 'display_name': user.get('display_name', ''),
-                'email': user.get('email', '')
+                'email': user.get('email', ''),
+                'last_login': user_data['last_login'].strftime("%Y-%m-%d %-H:%M:%S")
             }
-            
+
             # URL encode and redirect
             return redirect(f'{constants.FRONTEND_URL}?{urlencode(user_params)}')
             

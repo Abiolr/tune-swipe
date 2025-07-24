@@ -1,0 +1,141 @@
+/* Homepage */
+.homepage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+  
+.hero {
+    text-align: center;
+    padding: 4rem 0;
+    margin-bottom: 3rem;
+}
+  
+.hero h1 {
+    color: var(--spotify-green);
+    margin-bottom: 1.5rem;
+}
+  
+.hero p {
+    font-size: 1.1rem;
+    color: var(--spotify-muted);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+}
+
+/* Buttons */
+.spotify-connect-btn {
+    background: var(--spotify-green);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 220px;
+    justify-content: center;
+}
+
+.spotify-connect-btn:hover:not(:disabled) {
+    background: #1aa34a;
+    box-shadow: 0 2px 12px rgba(29, 185, 84, 0.3);
+}
+
+.spotify-connect-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.spotify-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Features Grid */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 4rem 0;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.2s ease;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.feature h3 {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.feature p {
+    color: var(--spotify-muted);
+    line-height: 1.6;
+}
+
+/* How It Works */
+.how-it-works {
+    margin: 5rem 0;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    color: var(--spotify-green);
+    margin-bottom: 3rem;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.step {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(29, 185, 84, 0.1);
+    color: var(--spotify-green);
+    border: 1px solid var(--spotify-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 3rem 0;
+    }
+    .features {
+        grid-template-columns: 1fr;
+    }
+    .steps {
+        grid-template-columns: 1fr;
+    }
+}

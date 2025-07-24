@@ -1,0 +1,154 @@
+/* Dashboard.css - Full Width Version (preserving all original classes) */
+
+/* Root and body settings for full height */
+:root, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main dashboard container - now full width */
+.dashboard {
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid var(--spotify-border);
+    position: relative;
+    box-sizing: border-box;
+    min-height: calc(100vh - 4rem); /* Full height minus padding */
+}
+
+/* Profile Header - enhanced spacing */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    width: 100%;
+}
+
+.dashboard h2 {
+    color: var(--spotify-green);
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem; /* Slightly larger */
+}
+
+.user-id, .user-email, .user-last-login {
+    color: var(--spotify-muted);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+/* Settings Button - enhanced */
+.settings-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--spotify-text);
+    border: 1px solid var(--spotify-border);
+    padding: 0.75rem 1.25rem; /* Slightly larger */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Account Settings - full width */
+.account-settings {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0; /* Increased margin */
+    border: 1px solid var(--spotify-border);
+    text-align: left;
+    width: 100%;
+}
+
+.settings-section h3 {
+    color: white;
+    margin-bottom: 1rem; /* Increased */
+    font-size: 1.3rem; /* Larger */
+}
+
+/* User Content - expanded layout */
+.user-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 1.5rem; /* Increased gap */
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.action-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 8px;
+    padding: 1.75rem; /* Increased padding */
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: left;
+    min-height: 160px; /* Minimum height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.action-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px); /* Added subtle lift effect */
+}
+
+.action-card h3 {
+    color: white;
+    margin-bottom: 0.75rem; /* Increased */
+    font-size: 1.2rem; /* Larger */
+}
+
+.action-card p {
+    color: var(--spotify-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Logout Button - enhanced */
+.logout-btn {
+    background: transparent;
+    color: #e22134;
+    border: 1px solid #e22134;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    margin-top: 1.5rem; /* Increased */
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.logout-btn:hover {
+    background: rgba(226, 33, 52, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 1.5rem;
+        border-radius: 0; /* Full width on mobile */
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .settings-btn {
+        align-self: flex-end;
+    }
+
+    .user-content {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+}
