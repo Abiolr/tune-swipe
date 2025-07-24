@@ -1,0 +1,43 @@
+/* Header.css */
+/* Header Styles */
+.app-header {
+    background: rgba(255, 255, 255, 0.03);
+    width: 100%;
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--spotify-border);
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-img {
+    height: 80px;
+    width: auto;
+    filter: brightness(0) saturate(100%) invert(64%) sepia(56%) saturate(571%) hue-rotate(87deg) brightness(95%) contrast(88%);
+}
+
+.header-title {
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--spotify-green);
+    margin: 0;
+}
+
+/* Header Color Variations */
+.header-primary .header-title {
+    color: var(--spotify-green);
+}
+
+.header-dark .header-title {
+    color: var(--spotify-text);
+}
+
+.header-accent .header-title {
+    color: #ff6b6b;
+}

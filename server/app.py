@@ -9,19 +9,17 @@ from spotipy.cache_handler import MemoryCacheHandler
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from urllib.parse import urlencode
+from models.database import Database
+import constants
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 
-# Frontend configuration
-FRONTEND_PORT = "5173"
-FRONTEND_URL = f"http://localhost:{FRONTEND_PORT}"
-
 CORS(app, resources={
     r"/api/*": {
-        "origins": [FRONTEND_URL],
+        "origins": [constants.FRONTEND_URL],
         "methods": ["GET", "POST"],
         "allow_headers": ["Content-Type"]
     }
@@ -36,16 +34,6 @@ if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
 
 # Use Flask server for callback
 SPOTIFY_REDIRECT_URI = 'http://127.0.0.1:5000/callback'
-
-def get_db_connection():
-    return mysql.connector.connect(
-        host=os.getenv('RLWY_HOST'),
-        user=os.getenv('RLWY_USER'),
-        password=os.getenv('RLWY_PASS'),
-        database=os.getenv('RLWY_DB'),
-        port=os.environ.get('RLWY_PORT'),
-        time_zone='+00:00'
-    )
 
 @app.route('/')
 def home():
@@ -81,11 +69,11 @@ def callback():
         
         if error:
             print(f"Spotify auth error: {error}")
-            return redirect(f'{FRONTEND_URL}?error={error}')
+            return redirect(f'{constants.FRONTEND_URL}?error={error}')
         
         if not code:
             print("Missing authorization code")
-            return redirect(f'{FRONTEND_URL}?error=missing_code')
+            return redirect(f'{constants.FRONTEND_URL}?error=missing_code')
 
         # Initialize OAuth with memory cache
         sp_oauth = SpotifyOAuth(
@@ -100,7 +88,7 @@ def callback():
         token_info = sp_oauth.get_access_token(code, check_cache=False)
         if not token_info:
             print("Failed to obtain access token")
-            return redirect(f'{FRONTEND_URL}?error=auth_failed')
+            return redirect(f'{constants.FRONTEND_URL}?error=auth_failed')
 
         # Get user info
         sp = spotipy.Spotify(auth=token_info['access_token'])
@@ -108,15 +96,16 @@ def callback():
             user = sp.current_user()
             if not user or 'id' not in user:
                 print("Invalid user data from Spotify")
-                return redirect(f'{FRONTEND_URL}?error=auth_failed')
+                return redirect(f'{constants.FRONTEND_URL}?error=auth_failed')
         except Exception as e:
             print(f"Spotify API error: {e}")
-            return redirect(f'{FRONTEND_URL}?error=spotify_api_error')
+            return redirect(f'{constants.FRONTEND_URL}?error=spotify_api_error')
 
         # Database operations
         conn = None
         try:
-            conn = get_db_connection()
+            db = Database()
+            conn = db.get_db_connection()
             cursor = conn.cursor(dictionary=True)
             
             # Insert or update user
@@ -137,33 +126,40 @@ def callback():
             ))
             conn.commit()
 
+            # Get the last login time for this user
+            cursor.execute("""
+                SELECT last_login FROM Users WHERE spotify_id = %s
+            """, (user['id'],))
+            user_data = cursor.fetchone()
+
             # Prepare success redirect
             user_params = {
                 'auth': 'success',
                 'spotify_id': user['id'],
                 'display_name': user.get('display_name', ''),
-                'email': user.get('email', '')
+                'email': user.get('email', ''),
+                'last_login': user_data['last_login'].strftime("%Y-%m-%d %-H:%M:%S")
             }
-            
+
             # URL encode and redirect
-            return redirect(f'{FRONTEND_URL}?{urlencode(user_params)}')
+            return redirect(f'{constants.FRONTEND_URL}?{urlencode(user_params)}')
             
         except mysql.connector.Error as db_err:
             print(f"Database error: {db_err}")
-            return redirect(f'{FRONTEND_URL}?error=database_error')
+            return redirect(f'{constants.FRONTEND_URL}?error=database_error')
         finally:
             if conn and conn.is_connected():
                 conn.close()
                 
     except spotipy.SpotifyException as e:
         print(f"Spotify OAuth error: {e}")
-        return redirect(f'{FRONTEND_URL}?error=auth_failed')
+        return redirect(f'{constants.FRONTEND_URL}?error=auth_failed')
     except Exception as e:
         print(f"Unexpected error in callback: {e}")
-        return redirect(f'{FRONTEND_URL}?error=server_error')
+        return redirect(f'{constants.FRONTEND_URL}?error=server_error')
 
 if __name__ == '__main__':
     print(f"Starting Flask server...")
-    print(f"Frontend URL: {FRONTEND_URL}")
+    print(f"Frontend URL: {constants.FRONTEND_URL}")
     print(f"Spotify Redirect URI: {SPOTIFY_REDIRECT_URI}")
     app.run(host='127.0.0.1', port=5000, debug=True)
