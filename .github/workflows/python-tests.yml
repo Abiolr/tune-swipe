@@ -57,6 +57,8 @@ jobs:
         RLWY_PASS: root
         RLWY_DB: test_db
         RLWY_PORT: 3306
+        SPOTIFY_CLIENT_ID: test_id
+        SPOTIFY_CLIENT_SECRET: test_secret
       run: |
         pytest --cov=./ --cov-report=xml
     
