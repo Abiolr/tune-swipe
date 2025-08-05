@@ -1,0 +1,649 @@
+/* PlaylistCreation.css */
+
+/* ==========================================================================
+   CSS VARIABLES & IMPORTS
+   ========================================================================== */
+
+:root {
+    --spotify-green: #1DB954;
+    --spotify-dark: #121212;
+    --spotify-light: #282828;
+    --spotify-text: #e0e0e0;
+    --spotify-muted: #a0a0a0;
+    --spotify-border: rgba(255, 255, 255, 0.08);
+    --spotify-hover: rgba(255, 255, 255, 0.1);
+    --error-red: #EF4444;
+    --warning-yellow: #ffc107;
+    --success-green: #28a745;
+    --shadow-light: rgba(0, 0, 0, 0.2);
+    --shadow-medium: rgba(0, 0, 0, 0.3);
+    --shadow-heavy: rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   MAIN PLAYLIST CREATION CONTAINER
+   ========================================================================== */
+
+.playlist-creation-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--spotify-text);
+    background-color: var(--spotify-dark);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--shadow-heavy);
+}
+
+/* ==========================================================================
+   BACK BUTTON
+   ========================================================================== */
+
+.back-btn {
+    background: transparent;
+    color: var(--spotify-text);
+    border: 1px solid var(--spotify-border);
+    padding: 0.75rem 1.5rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.back-btn:hover {
+    background: var(--spotify-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+/* ==========================================================================
+   LOADING STATE
+   ========================================================================== */
+
+.loading-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.loading-message h3 {
+    color: var(--spotify-text);
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.loading-message .spinning {
+    color: var(--spotify-green);
+    animation: spin 1s linear infinite;
+}
+
+/* ==========================================================================
+   AUTHENTICATION REQUIRED SECTION
+   ========================================================================== */
+
+.auth-required {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.auth-required h2 {
+    color: var(--spotify-text);
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.auth-required p {
+    color: var(--spotify-muted);
+    margin: 0;
+    max-width: 500px;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.auth-button {
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.auth-button:hover {
+    background: #1ed760;
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(29, 185, 84, 0.3);
+}
+
+.auth-note {
+    font-size: 0.9rem;
+    color: var(--spotify-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+/* ==========================================================================
+   SUCCESS STATE
+   ========================================================================== */
+
+.playlist-success-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--spotify-text);
+    background-color: var(--spotify-dark);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--shadow-heavy);
+}
+
+.success-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.success-icon {
+    color: var(--success-green);
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.success-message h2 {
+    color: var(--success-green);
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.success-message p {
+    color: var(--spotify-muted);
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.success-message a {
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    text-decoration: none;
+    padding: 1.7rem;
+    border-radius: 500px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    width: 250px;
+}
+
+.success-message a:hover {
+    background: #1ed760;
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(29, 185, 84, 0.3);
+}
+
+.back-to-dashboard {
+    background: transparent;
+    color: var(--spotify-text);
+    border: 1px solid var(--spotify-border);
+    padding: 0.75rem 1.5rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.back-to-dashboard:hover {
+    background: var(--spotify-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+/* ==========================================================================
+   PLAYLIST FORM
+   ========================================================================== */
+
+.playlist-form {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid var(--spotify-border);
+    backdrop-filter: blur(10px);
+}
+
+.playlist-form h1 {
+    color: var(--spotify-green);
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.form-description {
+    color: var(--spotify-muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   FORM GROUPS & INPUTS
+   ========================================================================== */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    color: white;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--spotify-border);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--spotify-green);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   SONGS PREVIEW SECTION
+   ========================================================================== */
+
+.songs-preview {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border: 1px solid var(--spotify-border);
+}
+
+.songs-preview h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.songs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.song-preview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid var(--spotify-border);
+    transition: all 0.2s ease;
+}
+
+.song-preview:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+.song-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.song-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.playlist-creation-container .song-name {
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.song-artist {
+    color: var(--spotify-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.more-songs {
+    color: var(--spotify-green);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 0.5rem 0 0 0;
+    font-style: italic;
+}
+
+/* ==========================================================================
+   ERROR HANDLING
+   ========================================================================== */
+
+.error-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--error-red);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   CREATE PLAYLIST BUTTON
+   ========================================================================== */
+
+.create-playlist-btn {
+    width: 100%;
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    border: none;
+    padding: 1.25rem;
+    border-radius: 500px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.create-playlist-btn:hover:not(:disabled) {
+    background: #1ed760;
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(29, 185, 84, 0.3);
+}
+
+.create-playlist-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.create-playlist-btn .spinning {
+    animation: spin 1s linear infinite;
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .playlist-creation-container,
+    .playlist-success-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .playlist-form {
+        padding: 1.5rem;
+    }
+    
+    .playlist-form h1 {
+        font-size: 1.75rem;
+    }
+    
+    .songs-preview {
+        padding: 1.25rem;
+    }
+    
+    .song-preview {
+        padding: 0.65rem;
+        gap: 0.75rem;
+    }
+    
+    .song-image {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .song-name {
+        font-size: 0.9rem;
+    }
+    
+    .song-artist {
+        font-size: 0.8rem;
+    }
+    
+    .create-playlist-btn {
+        padding: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .auth-button,
+    .spotify-link {
+        padding: 0.875rem 1.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .success-message h2,
+    .auth-required h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .playlist-creation-container,
+    .playlist-success-container {
+        padding: 1rem;
+        margin: 0.5rem;
+        border-radius: 8px;
+    }
+    
+    .playlist-form {
+        padding: 1.25rem;
+    }
+    
+    .playlist-form h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-description {
+        font-size: 0.9rem;
+    }
+    
+    .form-group label {
+        font-size: 0.95rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group textarea {
+        padding: 0.875rem;
+        font-size: 0.9rem;
+    }
+    
+    .songs-preview {
+        padding: 1rem;
+    }
+    
+    .songs-preview h3 {
+        font-size: 1.2rem;
+    }
+    
+    .song-preview {
+        padding: 0.6rem;
+        gap: 0.6rem;
+    }
+    
+    .song-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .song-name {
+        font-size: 0.85rem;
+    }
+    
+    .song-artist {
+        font-size: 0.75rem;
+    }
+    
+    .more-songs {
+        font-size: 0.85rem;
+    }
+    
+    .create-playlist-btn {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .back-btn {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .auth-button,
+    .spotify-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .back-to-dashboard {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .success-message h2,
+    .auth-required h2 {
+        font-size: 1.4rem;
+    }
+    
+    .success-message p,
+    .auth-required p {
+        font-size: 0.95rem;
+    }
+    
+    .loading-message h3 {
+        font-size: 1.3rem;
+    }
+    
+    .error-message {
+        padding: 0.875rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+    .playlist-creation-container,
+    .playlist-success-container {
+        padding: 0.75rem;
+    }
+    
+    .playlist-form {
+        padding: 1rem;
+    }
+    
+    .playlist-form h1 {
+        font-size: 1.35rem;
+    }
+    
+    .songs-preview {
+        padding: 0.875rem;
+    }
+    
+    .song-preview {
+        padding: 0.5rem;
+    }
+    
+    .song-image {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .create-playlist-btn {
+        padding: 0.875rem;
+        font-size: 0.9rem;
+    }
+    
+    .loading-message,
+    .success-message,
+    .auth-required {
+        min-height: 300px;
+        gap: 1rem;
+    }
+}

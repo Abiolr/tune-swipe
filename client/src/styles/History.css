@@ -1,0 +1,1016 @@
+/* History.css */
+
+/* ==========================================================================
+   CSS VARIABLES & IMPORTS
+   ========================================================================== */
+
+:root {
+    --spotify-green: #1DB954;
+    --spotify-dark: #121212;
+    --spotify-light: #282828;
+    --spotify-text: #e0e0e0;
+    --spotify-muted: #a0a0a0;
+    --spotify-border: rgba(255, 255, 255, 0.08);
+    --spotify-hover: rgba(255, 255, 255, 0.1);
+    --error-red: #EF4444;
+    --warning-yellow: #ffc107;
+    --success-green: #28a745;
+    --shadow-light: rgba(0, 0, 0, 0.2);
+    --shadow-medium: rgba(0, 0, 0, 0.3);
+    --shadow-heavy: rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   MAIN HISTORY CONTAINER
+   ========================================================================== */
+
+.history-container {
+    width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--spotify-text);
+    background-color: var(--spotify-dark);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--shadow-heavy);
+}
+
+/* ==========================================================================
+   HISTORY HEADER
+   ========================================================================== */
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--spotify-border);
+}
+
+.history-header h1 {
+    color: var(--spotify-green);
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.back-button {
+    background: transparent;
+    color: var(--spotify-text);
+    border: 1px solid var(--spotify-border);
+    padding: 0.75rem 1.5rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-button:hover {
+    background: var(--spotify-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+/* ==========================================================================
+   LOADING & ERROR STATES
+   ========================================================================== */
+
+.history-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    gap: 1.5rem;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--spotify-border);
+    border-top: 4px solid var(--spotify-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.history-loading p {
+    color: var(--spotify-muted);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.history-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.history-error h3 {
+    color: var(--error-red);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.history-error p {
+    color: var(--spotify-muted);
+    margin: 0;
+    max-width: 400px;
+}
+
+.retry-button {
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+    background: #1ed760;
+    transform: scale(1.02);
+}
+
+/* ==========================================================================
+   STATISTICS CARDS
+   ========================================================================== */
+
+.history-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--shadow-medium);
+}
+
+.stat-card svg {
+    font-size: 2rem;
+    color: var(--spotify-green);
+    margin-bottom: 0.75rem;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: white;
+}
+
+.stat-card p {
+    font-size: 0.9rem;
+    color: var(--spotify-muted);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   GENRE DISTRIBUTION
+   ========================================================================== */
+
+.genre-distribution {
+    margin-bottom: 2.5rem;
+}
+
+.genre-distribution h2 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.genre-tag {
+    display: flex;
+    align-items: center;
+    background: rgba(29, 185, 84, 0.1);
+    border: 1px solid rgba(29, 185, 84, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 500px;
+    font-size: 0.9rem;
+    color: var(--spotify-green);
+    transition: all 0.2s ease;
+}
+
+.genre-tag:hover {
+    background: rgba(29, 185, 84, 0.2);
+    transform: scale(1.05);
+}
+
+.genre-count {
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+/* ==========================================================================
+   SESSION TABS
+   ========================================================================== */
+
+.session-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--spotify-border);
+    overflow-x: auto;
+}
+
+.session-tabs button {
+    background: transparent;
+    color: var(--spotify-muted);
+    border: 1px solid var(--spotify-border);
+    padding: 0.75rem 1.25rem;
+    border-radius: 500px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.session-tabs button:hover {
+    background: var(--spotify-hover);
+    color: var(--spotify-text);
+}
+
+.session-tabs button.active {
+    background: var(--spotify-green);
+    color: var(--spotify-dark);
+    border-color: var(--spotify-green);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   SESSION LIST & CARDS
+   ========================================================================== */
+
+.session-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.session-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.session-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px var(--shadow-medium);
+}
+
+.session-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.session-card-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 500px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+    background: rgba(29, 185, 84, 0.2);
+    color: var(--spotify-green);
+    border: 1px solid rgba(29, 185, 84, 0.3);
+}
+
+.status-badge.completed {
+    background: rgba(40, 167, 69, 0.2);
+    color: var(--success-green);
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.status-badge.abandoned {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error-red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.session-card-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.session-card-stats > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.session-card-stats svg {
+    font-size: 1rem;
+}
+
+.session-card-stats .liked svg {
+    color: var(--spotify-green);
+}
+
+.session-card-stats .passed svg {
+    color: var(--error-red);
+}
+
+.session-card-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.genre-chip {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--spotify-text);
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--spotify-border);
+}
+
+.genre-chip.more {
+    background: rgba(29, 185, 84, 0.1);
+    color: var(--spotify-green);
+    border-color: rgba(29, 185, 84, 0.3);
+    font-style: italic;
+}
+
+/* ==========================================================================
+   NO SESSIONS STATE
+   ========================================================================== */
+
+.no-sessions {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--spotify-muted);
+}
+
+.no-sessions p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.no-sessions p:first-child {
+    font-size: 1.25rem;
+    color: var(--spotify-text);
+}
+
+/* ==========================================================================
+   SESSION DETAIL VIEW
+   ========================================================================== */
+
+.session-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: var(--spotify-text);
+}
+
+.session-detail h2 {
+    color: var(--spotify-green);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.session-meta {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.session-meta p {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.session-meta svg {
+    color: var(--spotify-green);
+    font-size: 1.1rem;
+}
+
+.session-preferences {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.session-preferences h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.preferences-grid h4 {
+    color: var(--spotify-green);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.preferences-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.preferences-grid li {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.session-songs .session-tabs {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.session-songs .songs-header h3 {
+    color: white;
+    margin-bottom: 2rem;
+    margin-left: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.session-songs p {
+    color: var(--spotify-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   SESSION SONGS SECTION
+   ========================================================================== */
+
+.session-songs {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--spotify-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.songs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.songs-header h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.songs-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    color: var(--spotify-muted);
+}
+
+.no-songs {
+    text-align: center;
+    padding: 2rem;
+    color: var(--spotify-muted);
+}
+
+/* ==========================================================================
+   SONGS LIST
+   ========================================================================== */
+
+.songs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.song-item {
+    display: grid;
+    grid-template-columns: auto 60px 1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--spotify-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.song-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.song-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--spotify-muted);
+}
+
+.song-artwork {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.song-artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.song-artwork:hover .preview-overlay {
+    opacity: 1;
+}
+
+.song-details {
+    min-width: 0; /* Allows text truncation */
+}
+
+.song-title {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-artist {
+    color: var(--spotify-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-genre {
+    color: var(--spotify-green);
+    font-size: 0.75rem;
+    text-transform: capitalize;
+}
+
+.explicit-badge {
+    background: var(--spotify-muted);
+    color: var(--spotify-dark);
+    padding: 0.1rem 0.3rem;
+    border-radius: 2px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.song-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.swipe-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+.swipe-indicator.liked {
+    background: rgba(29, 185, 84, 0.2);
+    color: var(--spotify-green);
+    border: 1px solid rgba(29, 185, 84, 0.3);
+}
+
+.swipe-indicator.passed {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error-red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.spotify-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(29, 185, 84, 0.1);
+    border: 1px solid rgba(29, 185, 84, 0.3);
+    border-radius: 50%;
+    color: var(--spotify-green);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+}
+
+.spotify-link:hover {
+    background: rgba(29, 185, 84, 0.2);
+    transform: scale(1.1);
+}
+
+.song-timestamp {
+    color: var(--spotify-muted);
+    font-size: 0.75rem;
+    text-align: right;
+    min-width: 60px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR SONGS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .songs-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .song-item {
+        grid-template-columns: auto 50px 1fr auto;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+    
+    .song-artwork {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .song-timestamp {
+        display: none;
+    }
+    
+    .song-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .song-item {
+        grid-template-columns: 40px 1fr auto;
+        gap: 0.5rem;
+    }
+    
+    .song-index {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+    }
+    
+    .song-artwork {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .song-title {
+        font-size: 0.9rem;
+    }
+    
+    .song-artist {
+        font-size: 0.8rem;
+    }
+    
+    .swipe-indicator,
+    .spotify-link {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .history-container {
+        padding: 1.5rem;
+    }
+    
+    .history-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .history-header h1 {
+        font-size: 2rem;
+    }
+    
+    .history-stats {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1.25rem;
+    }
+    
+    .stat-card h3 {
+        font-size: 1.75rem;
+    }
+    
+    .session-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .session-card {
+        padding: 1.25rem;
+    }
+    
+    .session-tabs {
+        gap: 0.25rem;
+    }
+    
+    .session-tabs button {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .session-detail {
+        padding: 1.5rem;
+    }
+    
+    .session-meta {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+    }
+    
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .history-container {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .history-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .back-button {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .history-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-card svg {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .stat-card p {
+        font-size: 0.8rem;
+    }
+    
+    .genre-tags {
+        gap: 0.5rem;
+    }
+    
+    .genre-tag {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .session-tabs {
+        padding-bottom: 0.75rem;
+    }
+    
+    .session-tabs button {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+    }
+    
+    .session-card {
+        padding: 1rem;
+    }
+    
+    .session-card-header h3 {
+        font-size: 1rem;
+    }
+    
+    .status-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    .session-card-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .session-card-stats > div {
+        font-size: 0.85rem;
+    }
+    
+    .genre-chip {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .session-detail {
+        padding: 1rem;
+    }
+    
+    .session-detail h2 {
+        font-size: 1.5rem;
+    }
+    
+    .session-meta {
+        padding: 1rem;
+    }
+    
+    .session-preferences,
+    .session-songs {
+        padding: 1rem;
+    }
+    
+    .no-sessions {
+        padding: 2rem 1rem;
+    }
+    
+    .no-sessions p:first-child {
+        font-size: 1.1rem;
+    }
+    
+    .no-sessions p {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+    .history-container {
+        padding: 0.75rem;
+    }
+    
+    .history-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        padding: 0.875rem;
+    }
+    
+    .session-card {
+        padding: 0.875rem;
+    }
+    
+    .session-card-stats {
+        font-size: 0.8rem;
+    }
+    
+    .genre-chip {
+        font-size: 0.7rem;
+    }
+}

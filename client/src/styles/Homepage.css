@@ -1,29 +1,47 @@
-/* Homepage */
-.homepage {
+/* Homepage.css */
+
+/* ==========================================================================
+   MAIN HOMEPAGE CONTAINER
+   ========================================================================== */
+
+   .homepage {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 0;
 }
-  
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+
 .hero {
     text-align: center;
     padding: 4rem 0;
     margin-bottom: 3rem;
 }
-  
-.hero h1 {
+
+.hero-content h1 {
     color: var(--spotify-green);
     margin-bottom: 1.5rem;
 }
-  
-.hero p {
+
+.hero-content p {
     font-size: 1.1rem;
     color: var(--spotify-muted);
     max-width: 600px;
     margin: 0 auto 2.5rem;
 }
 
-/* Buttons */
+/* ==========================================================================
+   CTA SECTION & SPOTIFY BUTTON
+   ========================================================================== */
+
+.cta-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 .spotify-connect-btn {
     background: var(--spotify-green);
     color: white;
@@ -54,9 +72,13 @@
 .spotify-icon {
     width: 20px;
     height: 20px;
+    fill: currentColor;
 }
 
-/* Features Grid */
+/* ==========================================================================
+   FEATURES SECTION
+   ========================================================================== */
+
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -72,23 +94,27 @@
     transition: all 0.2s ease;
 }
 
-.feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    display: block;
+.feature:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
 }
 
 .feature h3 {
     color: white;
     margin-bottom: 1rem;
+    font-size: 1.25rem;
 }
 
 .feature p {
     color: var(--spotify-muted);
     line-height: 1.6;
+    margin: 0;
 }
 
-/* How It Works */
+/* ==========================================================================
+   HOW IT WORKS SECTION
+   ========================================================================== */
+
 .how-it-works {
     margin: 5rem 0;
     text-align: center;
@@ -112,6 +138,11 @@
     border: 1px solid var(--spotify-border);
     border-radius: 8px;
     padding: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.step:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .step-number {
@@ -126,16 +157,58 @@
     justify-content: center;
     margin: 0 auto 1rem;
     font-weight: 500;
+    font-size: 1.1rem;
 }
 
+.step h4 {
+    color: white;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.step p {
+    color: var(--spotify-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
 @media (max-width: 768px) {
+    .homepage {
+        padding: 1rem 0;
+    }
+    
     .hero {
         padding: 3rem 0;
     }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+    
     .features {
         grid-template-columns: 1fr;
+        margin: 3rem 0;
     }
+    
+    .how-it-works {
+        margin: 4rem 0;
+    }
+    
     .steps {
         grid-template-columns: 1fr;
+    }
+    
+    .spotify-connect-btn {
+        min-width: 200px;
+        padding: 0.875rem 1.5rem;
     }
 }

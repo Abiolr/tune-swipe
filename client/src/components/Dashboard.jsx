@@ -1,16 +1,24 @@
 import '../styles/App.css';
-import '../styles/Dashboard.css'
+import '../styles/Dashboard.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Dashboard(props) {
+export default function Dashboard({ 
+    userDetails, 
+    userState, 
+    errorState, 
+    onLogout
+}) {
     const [showSettings, setShowSettings] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        if (props.onLogout) {
-            props.onLogout();
+        if (onLogout) {
+            onLogout();
         }
-        props.userState(null);
-        props.errorState(null);
+        userState(null);
+        errorState(null);
+        navigate('/');
     };
 
     return (
@@ -19,7 +27,7 @@ export default function Dashboard(props) {
                 {/* Main Profile Section */}
                 <div className="profile-header">
                     <div className="profile-info">
-                        <h2>Welcome, {props.userDetails.display_name || 'User'}!</h2>
+                        <h2>Welcome, {userDetails.display_name || 'User'}!</h2>
                     </div>
                     <button 
                         className="settings-btn"
@@ -34,9 +42,9 @@ export default function Dashboard(props) {
                     <div className="account-settings">
                         <div className="settings-section">
                             <h3>Account Settings</h3>
-                            <p className="user-last-login">Logged in at: {props.userDetails.last_login}</p>
-                            <p className="user-email">Email: {props.userDetails.email || 'Not provided'}</p>
-                            <p className="user-id">Spotify ID: {props.userDetails.spotify_id}</p>
+                            <p className="user-last-login">Last Logged in: {userDetails.last_login} (UTC)</p>
+                            <p className="user-email">Email: {userDetails.email || 'Not provided'}</p>
+                            <p className="user-id">Spotify ID: {userDetails.spotify_id}</p>
                         </div>
                         <button 
                             onClick={handleLogout}
@@ -47,18 +55,24 @@ export default function Dashboard(props) {
                     </div>
                 ) : (
                     <div className="user-content">
-                        <div className="action-card">
+                        <button
+                            className="action-card"
+                            onClick={() => navigate('/create-session')}
+                        >
                             <h3>Start Swiping</h3>
                             <p>Discover new songs to add to your playlist</p>
-                        </div>
+                        </button>
                         
-                        <div className="action-card">
+                        <button
+                            className="action-card"
+                            onClick={() => navigate('/history')}
+                        >
                             <h3>Your Playlists</h3>
                             <p>View and manage your created playlists</p>
-                        </div>
+                        </button>
                     </div>
                 )}
             </div>
         </div>
-    )
+    );
 }

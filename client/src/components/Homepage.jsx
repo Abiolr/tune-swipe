@@ -33,19 +33,16 @@ export default function Homepage(props) {
 
                 <section className="features">
                     <div className="feature">
-                        <span className="feature-icon">👆</span>
                         <h3>Simple Swiping</h3>
                         <p>Just like your favorite dating app, but for music! Swipe right to love a song, left to pass. It's that easy.</p>
                     </div>
                     
                     <div className="feature">
-                        <span className="feature-icon">🎧</span>
                         <h3>Preview Every Track</h3>
                         <p>Listen to song snippets as you swipe. Get a real feel for each track before making your choice.</p>
                     </div>
                     
                     <div className="feature">
-                        <span className="feature-icon">📱</span>
                         <h3>Instant Playlist Creation</h3>
                         <p>Your personalized playlist is automatically saved to your Spotify account, ready to enjoy anywhere.</p>
                     </div>
@@ -78,14 +75,7 @@ export default function Homepage(props) {
                             <p>Your custom playlist is automatically saved to your Spotify</p>
                         </div>
                     </div>
-                </section>
-
-                <div className="url-message">
-                    <p>Frontend running on: {props.window.location.origin}</p>
-                    <p>Backend expected at: http://127.0.0.1:5000</p>
-                </div>
-
-                
+                </section>  
             </div>
         </div>
     );

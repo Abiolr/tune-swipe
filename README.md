@@ -1,1 +1,1 @@
-# spotify-swipe
+# tune-swipe
