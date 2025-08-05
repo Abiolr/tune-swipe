@@ -1,5 +1,9 @@
 /* Header.css */
-/* Header Styles */
+
+/* ==========================================================================
+   MAIN HEADER CONTAINER
+   ========================================================================== */
+
 .app-header {
     background: rgba(255, 255, 255, 0.03);
     width: 100%;
@@ -8,7 +12,17 @@
     display: flex;
     justify-content: center;
     border-bottom: 1px solid var(--spotify-border);
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
+
+.app-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   HEADER LOGO & BRANDING
+   ========================================================================== */
 
 .header-logo {
     display: flex;
@@ -19,7 +33,8 @@
 .logo-img {
     height: 80px;
     width: auto;
-    filter: brightness(0) saturate(100%) invert(64%) sepia(56%) saturate(571%) hue-rotate(87deg) brightness(95%) contrast(88%);
+    filter: brightness(0) saturate(100%) invert(64%) sepia(56%) saturate(571%) hue-rotate(87deg) brightness(80%) contrast(90%);
+    transition: filter 0.2s ease;
 }
 
 .header-title {
@@ -27,9 +42,13 @@
     font-weight: 600;
     color: var(--spotify-green);
     margin: 0;
+    transition: color 0.2s ease;
 }
 
-/* Header Color Variations */
+/* ==========================================================================
+   HEADER COLOR VARIATIONS
+   ========================================================================== */
+
 .header-primary .header-title {
     color: var(--spotify-green);
 }
@@ -40,4 +59,43 @@
 
 .header-accent .header-title {
     color: #ff6b6b;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: 1rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .header-logo {
+        gap: 0.75rem;
+    }
+    
+    .logo-img {
+        height: 60px;
+    }
+    
+    .header-title {
+        font-size: 2.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-logo {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .logo-img {
+        height: 50px;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+    }
 }
