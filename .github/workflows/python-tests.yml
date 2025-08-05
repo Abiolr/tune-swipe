@@ -48,7 +48,7 @@ jobs:
         RLWY_DB: test_db
         RLWY_PORT: 3306
       run: |
-        mysql -h 127.0.0.1 -P 3306 -u root -proot test_db < sql/table_setup.sql
+        mysql -h 127.0.0.1 -P 3306 -u root -proot test_db < server/sql/table_setup.sql
     
     - name: Run tests
       env:
