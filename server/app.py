@@ -18,10 +18,10 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app, 
-     origins=[FRONTEND_URL, BACKEND_URL],
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=True
+    origins=[FRONTEND_URL, BACKEND_URL],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    supports_credentials=True
 )
 
 if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:

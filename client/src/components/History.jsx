@@ -1,8 +1,9 @@
-import '../styles/App.css';
-import '../styles/History.css';
+// History.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSpotify, FaHeart, FaTimes, FaMusic, FaChartBar, FaCalendarAlt, FaListUl, FaPlay, FaExternalLinkAlt } from 'react-icons/fa';
+import '../styles/App.css';
+import '../styles/History.css';
 
 export default function History({ user }) {
     const navigate = useNavigate();

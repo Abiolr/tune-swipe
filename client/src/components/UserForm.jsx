@@ -1,7 +1,8 @@
-import '../styles/App.css';
-import '../styles/UserForm.css';
+// UserForm.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/App.css';
+import '../styles/UserForm.css';
 
 export default function UserForm({ user }) {
     const navigate = useNavigate();

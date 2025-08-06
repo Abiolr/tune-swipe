@@ -1,6 +1,10 @@
-/* index.css - Global Styles & Reset */
+/* index.css */
+
+/* ==========================================================================
+   CSS VARIABLES & IMPORTS
+   ========================================================================== */
+
 :root {
-    /* Color variables (complement your App.css) */
     --color-black: #000000;
     --color-white: #ffffff;
     --color-error: #ff6b6b;
@@ -8,7 +12,10 @@
     --color-warning: #ff9800;
 }
 
-/* Modern CSS Reset (with some opinionated defaults) */
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+
 *,
 *::before,
 *::after {
@@ -31,7 +38,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Core element defaults */
+/* ==========================================================================
+   CORE ELEMENT DEFAULTS
+   ========================================================================== */
+
 img,
 picture,
 video,
@@ -49,20 +59,29 @@ select {
     font: inherit;
 }
 
-/* Remove list styles on ul, ol elements */
+/* ==========================================================================
+   LIST STYLES
+   ========================================================================== */
+
 ul,
 ol {
     list-style: none;
 }
 
-/* Anchor tag defaults */
+/* ==========================================================================
+   ANCHOR TAG DEFAULTS
+   ========================================================================== */
+
 a {
     color: inherit;
     text-decoration: none;
     cursor: pointer;
 }
 
-/* Typography defaults */
+/* ==========================================================================
+   TYPOGRAPHY DEFAULTS
+   ========================================================================== */
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     line-height: 1.2;
@@ -73,13 +92,19 @@ p {
     margin-bottom: 1em;
 }
 
-/* Accessibility focus styles */
+/* ==========================================================================
+   ACCESSIBILITY FOCUS STYLES
+   ========================================================================== */
+
 :focus-visible {
     outline: 2px solid var(--spotify-green);
     outline-offset: 2px;
 }
 
-/* Remove animations for reduced motion users */
+/* ==========================================================================
+   REDUCED MOTION PREFERENCES
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -95,7 +120,10 @@ p {
     }
 }
 
-/* Utility classes (optional but recommended) */
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */
+
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -108,7 +136,10 @@ p {
     border: 0;
 }
 
-/* Scrollbar styling (optional) */
+/* ==========================================================================
+   SCROLLBAR STYLING
+   ========================================================================== */
+
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;

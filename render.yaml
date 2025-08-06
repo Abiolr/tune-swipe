@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: tune-swipe-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SPOTIFY_CLIENT_ID
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: SPOTIFY_CLIENT_ID
+      - key: SPOTIFY_CLIENT_SECRET
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: SPOTIFY_CLIENT_SECRET
+      - key: RLWY_HOST
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: RLWY_HOST
+      - key: RLWY_USER
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: RLWY_USER
+      - key: RLWY_PASS
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: RLWY_PASS
+      - key: RLWY_DB
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: RLWY_DB
+      - key: RLWY_PORT
+        fromService:
+          name: tune-swipe-backend
+          type: env
+          key: RLWY_PORT

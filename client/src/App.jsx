@@ -1,6 +1,6 @@
 // App.jsx
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { BACKEND_URL } from './config';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -12,12 +12,17 @@ import SwipeSession from './components/SwipeSession';
 import PlaylistCreation from './components/PlaylistCreation';
 import './styles/App.css';
 
-export default function App() {
+function AppContent() {
+    const location = useLocation();
+    
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('tuneswipe_user');
         return savedUser ? JSON.parse(savedUser) : null;
     });
     const [error, setError] = useState(null);
+
+    // Boolean to control header/footer display
+    const showHeaderFooter = ['/', '/dashboard', '/history'].includes(location.pathname);
 
     // Persist user to localStorage
     useEffect(() => {
@@ -135,89 +140,101 @@ export default function App() {
     };
 
     return (
-        <Router>
-            <Header />
-            <div className="app-container">
-                <Routes>
-                    {/* Public routes */}
-                    <Route 
-                        path="/" 
-                        element={
-                            user ? 
-                            <Navigate to="/dashboard" replace /> : 
-                            <Homepage 
-                                spotifyHandling={handleSpotifyLogin}
-                                loadingState={false}
-                                window={window}
-                            />
-                        } 
-                    />
-                    
-                    {/* Protected routes */}
-                    <Route 
-                        path="/dashboard" 
-                        element={
-                            <ProtectedRoute>
-                                <Dashboard 
-                                    userDetails={user}
-                                    userState={setUser}
-                                    errorState={setError}
-                                    onLogout={handleLogout}
+        <div className="app">
+            {showHeaderFooter && <Header />}
+            
+            <main className={showHeaderFooter ? 'with-layout' : 'full-page'}>
+                <div className="app-container">
+                    <Routes>
+                        {/* Public routes */}
+                        <Route 
+                            path="/" 
+                            element={
+                                user ? 
+                                <Navigate to="/dashboard" replace /> : 
+                                <Homepage 
+                                    spotifyHandling={handleSpotifyLogin}
+                                    loadingState={false}
+                                    window={window}
                                 />
-                            </ProtectedRoute>
-                        } 
-                    />
+                            } 
+                        />
+                        
+                        {/* Protected routes */}
+                        <Route 
+                            path="/dashboard" 
+                            element={
+                                <ProtectedRoute>
+                                    <Dashboard 
+                                        userDetails={user}
+                                        userState={setUser}
+                                        errorState={setError}
+                                        onLogout={handleLogout}
+                                    />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        
+                        <Route 
+                            path="/create-session" 
+                            element={
+                                <ProtectedRoute>
+                                    <UserForm user={user} />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        
+                        <Route 
+                            path="/swipe-session" 
+                            element={
+                                <ProtectedRoute>
+                                    <SwipeSession user={user} />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        
+                        <Route 
+                            path="/create-playlist" 
+                            element={
+                                <ProtectedRoute>
+                                    <PlaylistCreation user={user} />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        
+                        <Route 
+                            path="/history" 
+                            element={
+                                <ProtectedRoute>
+                                    <History user={user} />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        
+                        {/* Catch all route */}
+                        <Route 
+                            path="*" 
+                            element={<Navigate to={user ? "/dashboard" : "/"} replace />} 
+                        />
+                    </Routes>
                     
-                    <Route 
-                        path="/create-session" 
-                        element={
-                            <ProtectedRoute>
-                                <UserForm user={user} />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    
-                    <Route 
-                        path="/swipe-session" 
-                        element={
-                            <ProtectedRoute>
-                                <SwipeSession user={user} />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    
-                    <Route 
-                        path="/create-playlist" 
-                        element={
-                            <ProtectedRoute>
-                                <PlaylistCreation user={user} />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    
-                    <Route 
-                        path="/history" 
-                        element={
-                            <ProtectedRoute>
-                                <History user={user} />
-                            </ProtectedRoute>
-                        } 
-                    />
-                    
-                    {/* Catch all route */}
-                    <Route 
-                        path="*" 
-                        element={<Navigate to={user ? "/dashboard" : "/"} replace />} 
-                    />
-                </Routes>
-                
-                {error && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
-            </div>
-            <Footer />
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+                </div>
+            </main>
+
+            {showHeaderFooter && <Footer />}
+        </div>
+    );
+}
+
+export default function App() {
+    return (
+        <Router>
+            <AppContent />
         </Router>
     );
 }
