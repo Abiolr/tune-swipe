@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaSpotify, FaCheck, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
+import { BACKEND_URL } from '../config';
 import '../styles/App.css';
 import '../styles/PlaylistCreation.css';
 
@@ -88,7 +89,7 @@ export default function PlaylistCreation({ user }) {
             setCheckingAuth(true);
             console.log('Checking auth status for playlist creation...');
             
-            const response = await fetch(`/api/check_auth/${user.spotify_id}`);
+            const response = await fetch(`${BACKEND_URL}/api/check_auth/${user.spotify_id}`);
             const data = await response.json();
             
             console.log('Auth check response:', data);
@@ -122,7 +123,7 @@ export default function PlaylistCreation({ user }) {
 
         try {
             // Create playlist
-            const createResponse = await fetch('/api/create_playlist', {
+            const createResponse = await fetch(`${BACKEND_URL}/api/create_playlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +153,7 @@ export default function PlaylistCreation({ user }) {
             const trackUris = likedSongs.map(song => song.uri).filter(uri => uri);
             
             if (trackUris.length > 0) {
-                const addTracksResponse = await fetch(`/api/add_tracks_to_playlist/${playlistId}`, {
+                const addTracksResponse = await fetch(`${BACKEND_URL}/api/add_tracks_to_playlist/${playlistId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

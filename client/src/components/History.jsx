@@ -1,7 +1,8 @@
 // History.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSpotify, FaHeart, FaTimes, FaMusic, FaChartBar, FaCalendarAlt, FaListUl, FaPlay, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaHeart, FaTimes, FaMusic, FaChartBar, FaCalendarAlt, FaListUl, FaPlay, FaExternalLinkAlt } from 'react-icons/fa';
+import { BACKEND_URL } from '../config';
 import '../styles/App.css';
 import '../styles/History.css';
 
@@ -32,7 +33,7 @@ export default function History({ user }) {
             setLoading(true);
             setError(null);
             
-            const response = await fetch(`/api/swipe_sessions?spotify_id=${user.spotify_id}`);
+            const response = await fetch(`${BACKEND_URL}/api/swipe_sessions?spotify_id=${user.spotify_id}`);
             
             if (!response.ok) {
                 throw new Error(`Failed to fetch sessions: ${response.status} ${response.statusText}`);
@@ -61,7 +62,7 @@ export default function History({ user }) {
         try {
             setSongsLoading(true);
             
-            const response = await fetch(`/api/session_songs/${sessionId}`);
+            const response = await fetch(`${BACKEND_URL}/api/session_songs/${sessionId}`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch session songs');

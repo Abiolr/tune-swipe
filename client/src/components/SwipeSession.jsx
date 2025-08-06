@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaPlay, FaPause, FaHeart, FaTimes, FaSpinner, FaExclamationTriangle, FaRedo } from 'react-icons/fa';
+import { BACKEND_URL } from '../config';
 import '../styles/App.css';
 import '../styles/SwipeSession.css';
 
@@ -45,7 +46,7 @@ export default function SwipeSession({ user }) {
             setError(null);
             
             // Create session
-            const sessionResponse = await fetch('/api/swipe_sessions', {
+            const sessionResponse = await fetch(`${BACKEND_URL}/api/swipe_sessions`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -85,7 +86,7 @@ export default function SwipeSession({ user }) {
                 session_id: sessionIdParam || sessionId || ''
             });
 
-            const response = await fetch(`/api/get_song?${params}`, {
+            const response = await fetch(`${BACKEND_URL}/api/get_song?${params}`, {
                 timeout: 15000
             });
             
@@ -166,7 +167,7 @@ export default function SwipeSession({ user }) {
         if (!sessionId || !track) return;
         
         try {
-            await fetch('/api/swipe', {
+            await fetch(`${BACKEND_URL}/api/swipe`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -184,7 +185,7 @@ export default function SwipeSession({ user }) {
         if (!sessionId) return;
         
         try {
-            await fetch(`/api/complete_session/${sessionId}`, {
+            await fetch(`${BACKEND_URL}/api/complete_session/${sessionId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' }
             });
