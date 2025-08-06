@@ -19,7 +19,7 @@ SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"
 else:
     FRONTEND_URL = "https://your-deployed-frontend.com"
     BACKEND_URL = "https://tune-swipe.onrender.com"
-    SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback""""
+    SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"""
 
 # Spotify credentials (should be set in environment variables)
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
