@@ -2,22 +2,16 @@
 import os
 
 # Environment detection (local vs deployed)
-IS_LOCAL = os.getenv('FLASK_ENV', 'development') == 'development'
+IS_LOCAL = os.getenv('IS_LOCAL') == 'development'
 
 # Frontend configuration
-
-FRONTEND_PORT = "5173"
-FRONTEND_URL = f"http://localhost:{FRONTEND_PORT}"
-BACKEND_URL = "https://tune-swipe.onrender.com"
-SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"
-
-"""if IS_LOCAL:
+if IS_LOCAL:
     FRONTEND_PORT = "5173"
     FRONTEND_URL = f"http://localhost:{FRONTEND_PORT}"
     BACKEND_URL = "http://127.0.0.1:5000"
     SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"
 else:
-    FRONTEND_URL = "https://your-deployed-frontend.com"
+    FRONTEND_URL = "https://tune-swipe.vercel.app"
     BACKEND_URL = "https://tune-swipe.onrender.com"
     SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"""
 
