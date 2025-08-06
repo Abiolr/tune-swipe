@@ -849,7 +849,14 @@ def get_session_songs(session_id):
         }), 500
         
 if __name__ == '__main__':
-    print("Test completed. Starting Flask server...")
+    print("Starting Flask server...")
+    print(f"Environment: {'Local Development' if IS_LOCAL else 'Production'}")
     print(f"Frontend URL: {FRONTEND_URL}")
+    print(f"Backend URL: {BACKEND_URL}")
     print(f"Spotify Redirect URI: {SPOTIFY_REDIRECT_URI}")
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    
+    if IS_LOCAL:
+        app.run(host='127.0.0.1', port=5000, debug=True)
+    else:
+        port = int(os.getenv('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=False)

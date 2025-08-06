@@ -1,6 +1,7 @@
+// App.jsx
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import './styles/App.css';
+import { BACKEND_URL } from './config';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Homepage from './components/Homepage';
@@ -9,6 +10,7 @@ import UserForm from './components/UserForm';
 import History from './components/History';
 import SwipeSession from './components/SwipeSession';
 import PlaylistCreation from './components/PlaylistCreation';
+import './styles/App.css';
 
 export default function App() {
     const [user, setUser] = useState(() => {
@@ -31,7 +33,7 @@ export default function App() {
         
         try {
             const response = await fetch(
-                'http://127.0.0.1:5000/api/spotify/auth_url', {
+                '/api/spotify/auth_url', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ export default function App() {
             console.error('Login error:', err);
             
             if (err.name === 'TypeError' && err.message.includes('fetch')) {
-                setError('Cannot connect to server. Make sure the Flask app is running on http://127.0.0.1:5000');
+                setError(`Cannot connect to server. Make sure the app is running on ${BACKEND_URL}`);
             } else {
                 setError(`Login failed: ${err.message}`);
             }

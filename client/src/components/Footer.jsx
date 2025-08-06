@@ -1,3 +1,4 @@
+// Footer.jsx
 import '../styles/App.css'
 
 export default function Footer () {

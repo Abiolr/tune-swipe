@@ -1,7 +1,8 @@
-import '../styles/App.css';
-import '../styles/Dashboard.css';
+// Dashboard.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/App.css';
+import '../styles/Dashboard.css';
 
 export default function Dashboard({ 
     userDetails, 
