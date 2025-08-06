@@ -38,7 +38,7 @@ function AppContent() {
         
         try {
             const response = await fetch(
-                '/api/spotify/auth_url', {
+                `${BACKEND_URL}/api/spotify/auth_url`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
