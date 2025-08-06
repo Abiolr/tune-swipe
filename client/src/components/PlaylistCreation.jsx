@@ -1,8 +1,9 @@
-import '../styles/App.css';
-import '../styles/PlaylistCreation.css';
+// PlaylistCreation.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaSpotify, FaCheck, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
+import '../styles/App.css';
+import '../styles/PlaylistCreation.css';
 
 export default function PlaylistCreation({ user }) {
     const navigate = useNavigate();

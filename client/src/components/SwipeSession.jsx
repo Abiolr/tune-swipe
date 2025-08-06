@@ -1,8 +1,9 @@
-import '../styles/App.css';
-import '../styles/SwipeSession.css';
+// SwipeSession.jsx
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaPlay, FaPause, FaHeart, FaTimes, FaSpinner, FaExclamationTriangle, FaRedo } from 'react-icons/fa';
+import '../styles/App.css';
+import '../styles/SwipeSession.css';
 
 export default function SwipeSession({ user }) {
     const navigate = useNavigate();
