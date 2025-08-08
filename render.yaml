@@ -1,18 +1,32 @@
 services:
-  services:
   - type: web
     name: spotify-swipe-backend
     runtime: python
     buildCommand: |
-      pip install gunicorn &&  # Explicitly install gunicorn first
-      cd server && 
-      pip install -r requirements.txt
+      cd server &&
+      pip install gunicorn &&
+      pip install -r render-requirements.txt
     startCommand: |
       cd server &&
-      gunicorn --bind 0.0.0.0:$PORT app:app
+      gunicorn app:app \
+        --bind 0.0.0.0:$PORT \
+        --workers 1 \
+        -k gthread \
+        --threads 4 \
+        --timeout 120
     envVars:
       - key: FLASK_ENV
         value: production
+
+      # Explicit frontend/backend envs (no extra spaces)
+      - key: FRONTEND_URL
+        value: "https://tune-swipe.vercel.app"
+      - key: BACKEND_URL
+        value: "https://tune-swipe.onrender.com"
+      - key: IS_LOCAL
+        value: "production"
+
+      # Spotify credentials (sourced from Render service secrets as before)
       - key: SPOTIFY_CLIENT_ID
         fromService:
           name: tune-swipe-backend
@@ -23,6 +37,8 @@ services:
           name: tune-swipe-backend
           type: env
           key: SPOTIFY_CLIENT_SECRET
+
+      # Database / Railway vars (sourced from existing service)
       - key: RLWY_HOST
         fromService:
           name: tune-swipe-backend
