@@ -1,3 +1,4 @@
+# app.py
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 import mysql.connector
