@@ -42,7 +42,7 @@
 .preferences-form {
     background: rgba(255, 255, 255, 0.03);
     border-radius: 8px;
-    height: 85%;
+    height: 90%;
     padding: 2rem;
     border: 1px solid var(--spotify-border);
 }

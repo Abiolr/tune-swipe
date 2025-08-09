@@ -213,13 +213,13 @@ export default function History({ user }) {
                                 className={activeTab === 'liked' ? 'active' : ''}
                                 onClick={() => setActiveTab('liked')}
                             >
-                                <FaHeart /> Liked ({likedSongs.length})
+                                Liked ({likedSongs.length})
                             </button>
                             <button 
                                 className={activeTab === 'passed' ? 'active' : ''}
                                 onClick={() => setActiveTab('passed')}
                             >
-                                <FaTimes /> Passed ({passedSongs.length})
+                                Passed ({passedSongs.length})
                             </button>
                         </div>
                     </div>
