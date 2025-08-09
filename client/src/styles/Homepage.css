@@ -212,3 +212,11 @@
         padding: 0.875rem 1.5rem;
     }
 }
+
+/* Feature icons */
+.feature-icon {
+    font-size: 2rem;
+    color: var(--spotify-green);
+    margin-bottom: 1rem;
+    display: block;
+}

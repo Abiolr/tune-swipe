@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { BACKEND_URL } from './config';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Homepage from './components/Homepage';
-import Dashboard from './components/Dashboard';
-import UserForm from './components/UserForm';
-import History from './components/History';
-import SwipeSession from './components/SwipeSession';
-import PlaylistCreation from './components/PlaylistCreation';
+import Homepage from './pages/Homepage';
+import Dashboard from './pages/Dashboard';
+import UserForm from './pages/UserForm';
+import History from './pages/History';
+import SwipeSession from './pages/SwipeSession';
+import PlaylistCreation from './pages/PlaylistCreation';
 import './styles/App.css';
 
 function AppContent() {
