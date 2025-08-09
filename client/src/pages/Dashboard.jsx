@@ -26,9 +26,6 @@ export default function Dashboard({
     return (
         <div className="dashboard-page">
             <div className="dashboard">
-                {/* ================================================================
-                   PROFILE HEADER
-                   ================================================================ */}
                 <header className="profile-header">
                     <div>
                         <h2>Welcome, {userDetails.display_name || 'User'}!</h2>
@@ -49,10 +46,6 @@ export default function Dashboard({
                         )}
                     </button>
                 </header>
-
-                {/* ================================================================
-                   MAIN CONTENT
-                   ================================================================ */}
                 {showSettings ? (
                     <section className="account-settings">
                         <h3>Account Settings</h3>
