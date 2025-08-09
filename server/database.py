@@ -1,4 +1,21 @@
-# database.py
+"""database.py - TuneSwipe Database Management Module.
+
+Provides database connectivity and operations for the TuneSwipe application.
+Handles user management, session tracking, song storage, and swipe recording
+using MySQL database with proper connection management and error handling.
+
+Main components:
+- Database connection management
+- User authentication and token management
+- Swipe session lifecycle management
+- Song data storage and retrieval
+- Progress tracking and statistics
+"""
+
+__author__ = "Abiola Raji"
+__version__ = "1.0"
+__date__ = "2025-08-09"
+
 import mysql.connector
 import os
 from dotenv import load_dotenv
@@ -10,8 +27,19 @@ from pathlib import Path
 load_dotenv()
 
 class Database:
+    """Database management class for TuneSwipe application.
+    
+    Handles all database operations including connection management,
+    user data storage, session tracking, and music data persistence.
+    Uses MySQL database with environment-based configuration.
+    """
 
     def __init__(self):
+        """Initialize database connection parameters.
+        
+        Loads database configuration from environment variables
+        and sets up SQL file directory path.
+        """
         self.host = os.environ.get('RLWY_HOST')
         self.user = os.environ.get('RLWY_USER')
         self.password = os.environ.get('RLWY_PASS')
@@ -20,22 +48,51 @@ class Database:
         self.sql_dir = Path(__file__).parent / "sql"
 
     def _load_sql_query(self, filename):
-        """Load SQL query from file"""
+        """Load SQL query from external file.
+        
+        Args:
+            filename (str): Name of the SQL file to load.
+            
+        Returns:
+            str: SQL query content.
+            
+        Raises:
+            FileNotFoundError: If SQL file doesn't exist.
+        """
         sql_path = self.sql_dir / filename
         with open(sql_path, 'r') as f:
             return f.read().strip()
     
     def get_db_connection(self):
+        """Establish database connection with proper configuration.
+        
+        Creates a new MySQL connection with timezone configuration
+        for consistent datetime handling across different environments.
+        
+        Returns:
+            mysql.connector.MySQLConnection: Active database connection.
+            
+        Raises:
+            mysql.connector.Error: If connection fails.
+        """
         return mysql.connector.connect(
             host=self.host,
             user=self.user,
             password=self.password,
             database=self.database,
             port=self.port,
-            time_zone='+00:00'
+            time_zone='+00:00'  # Ensure consistent UTC timezone
         )
 
     def create_database_tables(self):
+        """Create all required database tables from SQL schema.
+        
+        Executes the table creation script to set up the database schema.
+        This method is typically called during application setup or deployment.
+        
+        Raises:
+            mysql.connector.Error: If table creation fails.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -60,7 +117,18 @@ class Database:
                 conn.close()
 
     def get_user_seen_songs(self, spotify_id):
-        """Get all songs a user has seen across all sessions with better deduplication"""
+        """Get all songs a user has seen across all sessions.
+        
+        Retrieves comprehensive list of songs the user has encountered
+        in any session, helping to avoid showing duplicates and track
+        user's overall music discovery progress.
+        
+        Args:
+            spotify_id (str): User's Spotify ID.
+            
+        Returns:
+            list: List of dictionaries containing song data with session info.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
@@ -77,7 +145,18 @@ class Database:
             return []
 
     def get_user_liked_songs(self, spotify_id, limit=None):
-        """Get songs a user has liked (swiped right) with session info"""
+        """Get songs a user has liked (swiped right) with session info.
+        
+        Retrieves all songs the user has positively responded to,
+        useful for building playlists and understanding user preferences.
+        
+        Args:
+            spotify_id (str): User's Spotify ID.
+            limit (int, optional): Maximum number of songs to return.
+            
+        Returns:
+            list: List of dictionaries containing liked song data.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
@@ -97,7 +176,20 @@ class Database:
             return []
 
     def complete_session(self, session_id):
-        """Mark a session as completed and return session stats"""
+        """Mark a session as completed and return session stats.
+        
+        Updates session status to completed and calculates final statistics.
+        This operation is idempotent - can be called multiple times safely.
+        
+        Args:
+            session_id (str): Session identifier to complete.
+            
+        Returns:
+            dict: Operation result with success status and statistics.
+                - success (bool): Whether operation succeeded
+                - stats (dict): Session statistics if successful
+                - error (str): Error message if failed
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
@@ -161,7 +253,18 @@ class Database:
             return {'success': False, 'error': str(e)}
 
     def check_song_exists(self, spotify_uri=None, spotify_id=None):
-        """Check if a song already exists in the database"""
+        """Check if a song already exists in the database.
+        
+        Looks up song by either Spotify URI or Spotify ID to avoid
+        duplicate entries in the songs table.
+        
+        Args:
+            spotify_uri (str, optional): Spotify URI of the song.
+            spotify_id (str, optional): Spotify ID of the song.
+            
+        Returns:
+            str or None: Database song_id if found, None otherwise.
+        """
         if not spotify_uri and not spotify_id:
             return None
             
@@ -184,7 +287,17 @@ class Database:
             return None
 
     def get_session_progress(self, session_id):
-        """Get current progress of a swipe session"""
+        """Get current progress of a swipe session.
+        
+        Calculates session progress including completion percentage,
+        current liked songs count vs target, and completion status.
+        
+        Args:
+            session_id (str): Session identifier.
+            
+        Returns:
+            dict or None: Progress data including percentages and counts.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
@@ -196,6 +309,7 @@ class Database:
             conn.close()
             
             if result:
+                # Calculate progress metrics
                 result['progress_percentage'] = (result['liked_count'] / result['target_playlist_length']) * 100
                 result['is_complete'] = result['liked_count'] >= result['target_playlist_length']
             
@@ -206,7 +320,18 @@ class Database:
             return None
 
     def get_session_seen_songs(self, spotify_id, session_id):
-        """Get spotify_ids of songs already seen in this session"""
+        """Get spotify_ids of songs already seen in this session.
+        
+        Returns a set of Spotify IDs for songs already shown in the current
+        session to prevent showing duplicates during the same session.
+        
+        Args:
+            spotify_id (str): User's Spotify ID (for context).
+            session_id (str): Session identifier.
+            
+        Returns:
+            set: Set of Spotify IDs already seen in this session.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -230,7 +355,19 @@ class Database:
                 conn.close()
 
     def add_song_to_session(self, session_id, spotify_id, track_data):
-        """Add song to database when served to user"""
+        """Add song to database when served to user.
+        
+        Inserts song data if it doesn't exist, or retrieves existing song ID.
+        This ensures all songs shown to users are tracked in the database.
+        
+        Args:
+            session_id (str): Session identifier.
+            spotify_id (str): Spotify track ID.
+            track_data (dict): Full track information from Spotify API.
+            
+        Returns:
+            str or None: Database song_id if successful, None on error.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -245,10 +382,12 @@ class Database:
                 # Insert new song with safe data handling
                 song_id = str(uuid.uuid4())
                 
+                # Safely extract artist name
                 artist_name = 'Unknown Artist'
                 if track_data.get('artists') and len(track_data['artists']) > 0:
                     artist_name = track_data['artists'][0].get('name', 'Unknown Artist')
                 
+                # Safely extract album image
                 album_image = ''
                 if track_data.get('album', {}).get('images'):
                     album_image = track_data['album']['images'][0].get('url', '')
@@ -284,7 +423,22 @@ class Database:
                 conn.close()
 
     def record_swipe(self, session_id, song_id, direction):
-        """Record swipe with proper error handling"""
+        """Record swipe with proper error handling.
+        
+        Stores user's swipe decision with timestamp and order tracking.
+        Maintains swipe order within session for analysis purposes.
+        
+        Args:
+            session_id (str): Session identifier.
+            song_id (str): Database song ID (not Spotify ID).
+            direction (str): Swipe direction ('LEFT' or 'RIGHT').
+            
+        Returns:
+            str: Swipe ID if successful.
+            
+        Raises:
+            Exception: If recording fails (re-raised for API handling).
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -323,15 +477,23 @@ class Database:
                 conn.close()
 
     def get_user_sessions(self, spotify_id):
-        """Get all swipe sessions for a user with stats"""
+        """Get all swipe sessions for a user with stats.
+        
+        Retrieves comprehensive session data including metadata,
+        preferences, and aggregated swipe statistics.
+        
+        Args:
+            spotify_id (str): User's Spotify ID.
+            
+        Returns:
+            list: List of session dictionaries with statistics.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
             
             query = self._load_sql_query('get_user_sessions.sql')
             cursor.execute(query, (spotify_id,))
-            
-            sessions = cursor.fetchall()
             
             sessions = cursor.fetchall()
             
@@ -353,7 +515,17 @@ class Database:
             return []   
 
     def get_user(self, spotify_id):
-        """Get user by spotify_id including access token"""
+        """Get user by spotify_id including access token.
+        
+        Retrieves complete user record including authentication tokens
+        and account information for API operations.
+        
+        Args:
+            spotify_id (str): User's Spotify ID.
+            
+        Returns:
+            dict or None: User data dictionary if found, None otherwise.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)
@@ -367,7 +539,20 @@ class Database:
                 conn.close()
 
     def update_user_tokens(self, spotify_id, access_token, refresh_token, expires_at):
-        """Update user's access and refresh tokens"""
+        """Update user's access and refresh tokens.
+        
+        Updates stored authentication tokens after refresh operations
+        to maintain valid API access for playlist operations.
+        
+        Args:
+            spotify_id (str): User's Spotify ID.
+            access_token (str): New access token.
+            refresh_token (str): New refresh token (may be same as old).
+            expires_at (datetime): Token expiration timestamp.
+            
+        Raises:
+            Exception: If update fails (re-raised for caller handling).
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -387,7 +572,21 @@ class Database:
                 conn.close()
 
     def save_playlist(self, playlist_id, spotify_id, spotify_playlist_id, name, description):
-        """Save playlist to database"""
+        """Save playlist to database.
+        
+        Records playlist creation in local database for tracking and
+        potential future operations.
+        
+        Args:
+            playlist_id (str): Internal playlist ID.
+            spotify_id (str): User's Spotify ID.
+            spotify_playlist_id (str): Spotify's playlist ID.
+            name (str): Playlist name.
+            description (str): Playlist description.
+            
+        Raises:
+            Exception: If save fails (re-raised for caller handling).
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor()
@@ -411,7 +610,18 @@ class Database:
                 conn.close()     
 
     def get_session_songs(self, session_id):
-        """Get all songs from a specific session with swipe details"""
+        """Get all songs from a specific session with swipe details.
+        
+        Retrieves complete song data for a session including user's
+        swipe decisions, timestamps, and song metadata. Useful for
+        building playlists and analyzing user preferences.
+        
+        Args:
+            session_id (str): Session identifier.
+            
+        Returns:
+            list: List of song dictionaries with swipe data and metadata.
+        """
         try:
             conn = self.get_db_connection()
             cursor = conn.cursor(dictionary=True)

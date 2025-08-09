@@ -1,15 +1,49 @@
+"""test_db.py - Database Functionality Tests.
+
+Unit tests for database operations including connection management,
+song storage, session handling, and swipe recording. Tests ensure
+data integrity and proper error handling across all database methods.
+
+Test coverage includes:
+- Database connectivity
+- Song data insertion and retrieval
+- User session management
+- Swipe recording and tracking
+"""
+
+__author__ = "Abiola Raji"
+__version__ = "1.0"
+__date__ = "2025-08-09"
+
 import pytest
 from datetime import datetime
 import uuid
 
+
 def test_db_connection(db):
-    """Test database connection can be established"""
+    """Test database connection can be established.
+    
+    Verifies that the database configuration is correct and
+    a connection can be successfully established and closed.
+    
+    Args:
+        db (Database): Database fixture instance.
+    """
     conn = db.get_db_connection()
     assert conn.is_connected()
     conn.close()
 
+
 def test_add_song_to_session(db):
-    """Test adding a song to the database"""
+    """Test adding a song to the database.
+    
+    Verifies that song data can be properly inserted into the
+    database with all required fields handled correctly.
+    
+    Args:
+        db (Database): Database fixture instance.
+    """
+    # Create test track data matching Spotify API structure
     test_track = {
         'name': 'Test Song',
         'artists': [{'name': 'Test Artist'}],
@@ -18,18 +52,28 @@ def test_add_song_to_session(db):
         'popularity': 50
     }
     
+    # Add song to database
     song_id = db.add_song_to_session(
         session_id=str(uuid.uuid4()),
         spotify_id='test123',
         track_data=test_track
     )
     
+    # Verify song was added successfully
     assert song_id is not None
 
+
 def test_record_swipe(db):
-    """Test recording a swipe"""
-    # First create a test user
-    test_user_id = 'test_user_' + str(uuid.uuid4())[:8]  # Unique test user ID
+    """Test recording a swipe action.
+    
+    Verifies that swipe data can be properly recorded with all
+    required relationships and ordering maintained correctly.
+    
+    Args:
+        db (Database): Database fixture instance.
+    """
+    # Create unique test user ID to avoid conflicts
+    test_user_id = 'test_user_' + str(uuid.uuid4())[:8]
     conn = db.get_db_connection()
     cursor = conn.cursor()
     
@@ -64,6 +108,7 @@ def test_record_swipe(db):
         # Record swipe
         swipe_id = db.record_swipe(session_id, song_id, 'RIGHT')
         assert swipe_id is not None
+        
     finally:
         cursor.close()
         conn.close()

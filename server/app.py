@@ -1,4 +1,21 @@
-# app.py
+"""app.py - TuneSwipe Flask API Application.
+
+Main Flask application providing Spotify authentication, music discovery,
+and playlist creation functionality. Handles user sessions, song swiping,
+and integration with Spotify and Deezer APIs.
+
+Main components:
+- Spotify OAuth authentication flow
+- Music search and recommendation
+- Swipe session management
+- Playlist creation and management
+- Database integration for user data
+"""
+
+__author__ = "Abiola Raji"
+__version__ = "1.0"
+__date__ = "2025-08-09"
+
 from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 import mysql.connector
@@ -28,12 +45,23 @@ CORS(app,
 if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
     raise ValueError("Missing Spotify credentials. Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in .env")
 
+
 def search_deezer_preview(track_name, artist_name):
-    """
-    Search Deezer API for a track and return its preview URL
+    """Search Deezer API for a track and return its preview URL.
+    
+    Attempts to find a 30-second preview URL for the specified track
+    by searching Deezer's public API. Falls back to general search
+    if exact match isn't found.
+    
+    Args:
+        track_name (str): Name of the track to search for.
+        artist_name (str): Name of the artist.
+        
+    Returns:
+        str or None: Preview URL if found, None otherwise.
     """
     try:
-        # First search for the track
+        # Try exact search first
         search_url = f"https://api.deezer.com/search?q=track:\"{track_name}\" artist:\"{artist_name}\""
         response = requests.get(search_url)
         response.raise_for_status()
@@ -58,7 +86,20 @@ def search_deezer_preview(track_name, artist_name):
         return None
 
 def get_fresh_spotify_token(user_data):
-    """Get a fresh access token for the user, refreshing if necessary"""
+    """Get a fresh access token for the user, refreshing if necessary.
+    
+    Checks token expiration and refreshes if needed using the stored
+    refresh token. Updates the database with new token information.
+    
+    Args:
+        user_data (dict): User data including tokens and expiration.
+        
+    Returns:
+        str: Valid access token.
+        
+    Raises:
+        Exception: If token refresh fails or no refresh token available.
+    """
     try:
         # Check if token is still valid (with 5 minute buffer)
         if user_data['token_expires_at'] and user_data['token_expires_at'] > datetime.utcnow() + timedelta(minutes=5):
@@ -96,15 +137,33 @@ def get_fresh_spotify_token(user_data):
 
 @app.route('/')
 def home():
-    return "Spotify Auth Service Running"
+    """Health check endpoint.
+    
+    Returns:
+        dict: Service status and version information.
+    """
+    return jsonify({
+        "status": "ok",
+        "service": "TuneSwipe API",
+        "version": "1.0"
+        })
 
 @app.route('/api/spotify/auth_url', methods=['GET'])
 def get_auth_url():
-    try:
-        # Generate a unique state parameter for each request
-        state = str(uuid.uuid4())
+    """Generate Spotify OAuth authorization URL.
+    
+    Creates a unique state parameter and generates the full Spotify
+    authorization URL with required scopes for playlist management.
+    
+    Returns:
+        dict: JSON response containing the authorization URL.
         
-        # Always request full permissions from the start
+    Status Codes:
+        200: Success - auth URL generated
+        500: Internal server error
+    """
+    try:
+        state = str(uuid.uuid4())
         scopes = 'user-read-email playlist-modify-public playlist-modify-private'
         
         print(f"Auth URL request - requesting full scopes: {scopes}")
@@ -125,10 +184,19 @@ def get_auth_url():
         
     except Exception as e:
         print(f"Error in get_auth_url: {e}")
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': str(e)}), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/callback')
 def callback():
+    """Handle Spotify OAuth callback.
+    
+    Processes the authorization code from Spotify, exchanges it for
+    access and refresh tokens, retrieves user information, and stores
+    everything in the database. Redirects to frontend with user data.
+    
+    Returns:
+        Response: Redirect to frontend URL with success/error parameters.
+    """
     try:
         code = request.args.get('code')
         error = request.args.get('error')
@@ -154,7 +222,6 @@ def callback():
             state=state
         )
         
-        # Get access token
         token_info = sp_oauth.get_access_token(code, check_cache=False)
         if not token_info:
             print("Failed to obtain access token")
@@ -171,7 +238,6 @@ def callback():
             print(f"Spotify API error: {e}")
             return redirect(f'{FRONTEND_URL}?error=spotify_api_error')
 
-        # Database operations
         conn = None
         try:
             db = Database()
@@ -181,7 +247,6 @@ def callback():
             # Calculate token expiry
             expires_at = datetime.utcnow() + timedelta(seconds=token_info.get('expires_in', 3600))
             
-            # Insert or update user with tokens
             cursor.execute("""
                 INSERT INTO Users (
                     spotify_id, display_name, email, access_token, 
@@ -243,8 +308,25 @@ def callback():
 
 @app.route('/api/get_song', methods=['GET'])
 def get_song():
-    """
-    Simplified recommendation fetching - just get unique songs from search
+    """Fetch unique songs from Spotify search based on genres.
+    
+    Searches Spotify for tracks matching specified genres, filters out
+    previously seen songs, and enriches with Deezer preview URLs.
+    Tracks seen songs per session to avoid duplicates.
+    
+    Query Parameters:
+        genre (str): Comma-separated list of genres (default: 'pop')
+        limit (int): Maximum number of songs to return (max 50, default: 20)
+        spotify_id (str): User's Spotify ID (default: 'anonymous')
+        session_id (str): Current session ID for filtering seen songs
+    
+    Returns:
+        dict: JSON response with tracks array and metadata.
+        
+    Status Codes:
+        200: Success - songs returned
+        400: Bad request - no songs found for genres
+        500: Internal server error
     """
     try:
         # Get basic parameters
@@ -270,7 +352,7 @@ def get_song():
             return jsonify({
                 'status': 'error',
                 'message': f'Spotify API connection failed: {str(e)}'
-            }), 500
+            }), HTTP_INTERNAL_SERVER_ERROR
 
         # Get already seen songs from this session
         seen_songs = set()
@@ -345,7 +427,7 @@ def get_song():
             return jsonify({
                 'status': 'error',
                 'message': f'No songs found for genres: {", ".join(genres)}'
-            }), 400
+            }), HTTP_BAD_REQUEST
 
         # Take only what we need
         selected_tracks = unique_tracks[:limit]
@@ -418,10 +500,28 @@ def get_song():
         return jsonify({
             'status': 'error',
             'message': f'Server error: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/swipe', methods=['POST'])
 def record_swipe():
+    """Record a user's swipe action on a song.
+    
+    Stores the user's swipe decision (left/right) for a specific song
+    in a session. Ensures the song exists in the database before
+    recording the swipe.
+    
+    Request Body:
+        session_id (str): Session identifier
+        song_data (dict): Song information including spotify_id
+        direction (str): Swipe direction ('LEFT' or 'RIGHT')
+    
+    Returns:
+        dict: JSON response with swipe ID on success.
+        
+    Status Codes:
+        200: Success - swipe recorded
+        500: Internal server error
+    """
     try:
         data = request.get_json()
         session_id = data['session_id']
@@ -443,24 +543,40 @@ def record_swipe():
         # Record swipe using the database song_id
         swipe_id = db.record_swipe(
             session_id=session_id,
-            song_id=song_id,  # This is now the correct database song_id
+            song_id=song_id,
             direction=direction
         )
         
         return jsonify({'status': 'success', 'swipe_id': swipe_id})
         
     except Exception as e:
-        print(f"Error in record_swipe: {e}")  # Add logging
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        print(f"Error in record_swipe: {e}")
+        return jsonify({'status': 'error', 'message': str(e)}), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/swipe_sessions', methods=['POST'])
 def create_swipe_session():
-    """
-    Create a new swipe session for a user
+    """Create a new swipe session for a user.
+    
+    Initializes a new swiping session with specified preferences
+    and target playlist length. Each session tracks songs shown
+    and user swipe decisions.
+    
+    Request Body:
+        spotify_id (str): User's Spotify ID
+        target_playlist_length (int): Desired number of liked songs (default: 20)
+        session_preferences (dict): User preferences like genres (default: {})
+    
+    Returns:
+        dict: JSON response with new session details.
+        
+    Status Codes:
+        200: Success - session created
+        400: Bad request - missing Spotify ID
+        500: Internal server error
     """
     try:
         data = request.get_json()
-        spotify_id = data.get('spotify_id')  # Changed from user_id to spotify_id
+        spotify_id = data.get('spotify_id')
         target_playlist_length = data.get('target_playlist_length', 20)
         session_preferences = data.get('session_preferences', {})
         
@@ -468,12 +584,10 @@ def create_swipe_session():
             return jsonify({
                 'status': 'error',
                 'message': 'Spotify ID is required'
-            }), 400
+            }), HTTP_BAD_REQUEST
         
-        # Generate session ID
         session_id = str(uuid.uuid4())
         
-        # Insert into database
         db = Database()
         conn = db.get_db_connection()
         cursor = conn.cursor()
@@ -485,7 +599,7 @@ def create_swipe_session():
             ) VALUES (%s, %s, %s, %s, %s)
         """, (
             session_id,
-            spotify_id,  # Now using spotify_id directly
+            spotify_id,
             target_playlist_length,
             json.dumps(session_preferences),
             datetime.utcnow()
@@ -498,7 +612,7 @@ def create_swipe_session():
             'status': 'success',
             'data': {
                 'session_id': session_id,
-                'spotify_id': spotify_id,  # Changed from user_id to spotify_id
+                'spotify_id': spotify_id,
                 'target_playlist_length': target_playlist_length
             },
             'message': 'Swipe session created successfully'
@@ -509,12 +623,25 @@ def create_swipe_session():
         return jsonify({
             'status': 'error',
             'message': f'Failed to create swipe session: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/swipe_sessions', methods=['GET'])
 def get_swipe_sessions():
-    """
-    Get swipe sessions for a user
+    """Get swipe sessions for a user with aggregated statistics.
+    
+    Retrieves all swipe sessions for a user including session metadata
+    and aggregated swipe statistics (total swipes, likes, passes).
+    
+    Query Parameters:
+        spotify_id (str): User's Spotify ID
+    
+    Returns:
+        dict: JSON response with sessions array and total count.
+        
+    Status Codes:
+        200: Success - sessions returned
+        400: Bad request - missing Spotify ID
+        500: Internal server error
     """
     try:
         spotify_id = request.args.get('spotify_id')
@@ -523,7 +650,7 @@ def get_swipe_sessions():
             return jsonify({
                 'status': 'error',
                 'message': 'Spotify ID is required'
-            }), 400
+            }), HTTP_BAD_REQUEST
         
         db = Database()
         conn = db.get_db_connection()
@@ -580,12 +707,25 @@ def get_swipe_sessions():
         return jsonify({
             'status': 'error',
             'message': f'Failed to get swipe sessions: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/session_progress/<session_id>', methods=['GET'])
 def get_session_progress(session_id):
-    """
-    Get current progress of a swipe session
+    """Get current progress of a swipe session.
+    
+    Returns session progress including number of liked songs vs target,
+    total swipes, and completion status.
+    
+    Args:
+        session_id (str): Session identifier from URL path
+    
+    Returns:
+        dict: JSON response with progress data.
+        
+    Status Codes:
+        200: Success - progress returned
+        404: Not found - session doesn't exist
+        500: Internal server error
     """
     try:
         db = Database()
@@ -595,7 +735,7 @@ def get_session_progress(session_id):
             return jsonify({
                 'status': 'error',
                 'message': 'Session not found'
-            }), 404
+            }), HTTP_NOT_FOUND
             
         return jsonify({
             'status': 'success',
@@ -607,19 +747,32 @@ def get_session_progress(session_id):
         return jsonify({
             'status': 'error',
             'message': f'Failed to get session progress: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/complete_session/<session_id>', methods=['POST'])
 def complete_session(session_id):
-    """
-    Mark a swipe session as completed
+    """Mark a swipe session as completed.
+    
+    Updates session status to completed and returns final statistics.
+    Can be called multiple times safely (idempotent operation).
+    
+    Args:
+        session_id (str): Session identifier from URL path
+    
+    Returns:
+        dict: JSON response with completion status and statistics.
+        
+    Status Codes:
+        200: Success - session completed
+        400: Bad request - missing session ID
+        500: Internal server error
     """
     try:
         if not session_id:
             return jsonify({
                 'status': 'error',
                 'message': 'Session ID is required'
-            }), 400
+            }), HTTP_BAD_REQUEST
         
         db = Database()
         result = db.complete_session(session_id)
@@ -637,18 +790,34 @@ def complete_session(session_id):
             return jsonify({
                 'status': 'error',
                 'message': f'Failed to complete session: {result.get("error", "Unknown error")}'
-            }), 500
+            }), HTTP_INTERNAL_SERVER_ERROR
             
     except Exception as e:
         print(f"Error completing session: {e}")
         return jsonify({
             'status': 'error',
             'message': f'Server error: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/check_auth/<spotify_id>', methods=['GET'])
 def check_auth(spotify_id):
-    """Check if user needs to re-authenticate for playlist creation"""
+    """Check if user needs to re-authenticate for playlist creation.
+    
+    Validates user's stored tokens and tests playlist permissions
+    by attempting to access Spotify's playlist API.
+    
+    Args:
+        spotify_id (str): User's Spotify ID from URL path
+    
+    Returns:
+        dict: JSON response indicating authentication status.
+        
+    Status Codes:
+        200: Success - user is authenticated
+        404: Not found - user doesn't exist
+        401: Unauthorized - authentication required
+        500: Internal server error
+    """
     try:
         db = Database()
         user = db.get_user(spotify_id)
@@ -658,7 +827,7 @@ def check_auth(spotify_id):
                 'status': 'error',
                 'message': 'User not found',
                 'needs_auth': True
-            }), 404
+            }), HTTP_NOT_FOUND
         
         # Check if user has valid tokens
         has_valid_token = (
@@ -701,10 +870,31 @@ def check_auth(spotify_id):
             'status': 'error',
             'message': 'Server error',
             'needs_auth': True
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/create_playlist', methods=['POST'])
 def create_playlist():
+    """Create a new Spotify playlist for the user.
+    
+    Creates a playlist on the user's Spotify account using their
+    stored authentication tokens. Saves playlist information to
+    the local database.
+    
+    Request Body:
+        spotify_id (str): User's Spotify ID
+        name (str): Playlist name
+        description (str): Playlist description (optional)
+        public (bool): Whether playlist should be public (default: True)
+    
+    Returns:
+        dict: JSON response with playlist ID and external URL.
+        
+    Status Codes:
+        200: Success - playlist created
+        401: Unauthorized - authentication required
+        404: Not found - user doesn't exist
+        500: Internal server error
+    """
     try:
         data = request.get_json()
         spotify_id = data['spotify_id']
@@ -720,7 +910,7 @@ def create_playlist():
                 'status': 'error', 
                 'message': 'User not found',
                 'needs_auth': True
-            }), 404
+            }), HTTP_NOT_FOUND
 
         # Get fresh token and create playlist
         try:
@@ -757,21 +947,42 @@ def create_playlist():
                 'status': 'error',
                 'message': f'Spotify API error: {str(spotify_error)}',
                 'needs_auth': True
-            }), 401
+            }), HTTP_UNAUTHORIZED
         except Exception as auth_error:
             print(f"Authentication error: {auth_error}")
             return jsonify({
                 'status': 'error',
                 'message': str(auth_error),
                 'needs_auth': True
-            }), 401
+            }), HTTP_UNAUTHORIZED
 
     except Exception as e:
         print(f"Error creating playlist: {e}")
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        return jsonify({'status': 'error', 'message': str(e)}), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/add_tracks_to_playlist/<playlist_id>', methods=['POST'])
 def add_tracks_to_playlist(playlist_id):
+    """Add tracks to an existing Spotify playlist.
+    
+    Adds multiple tracks to a specified playlist using the user's stored
+    authentication tokens. Handles Spotify's API limits by batching requests.
+    
+    Args:
+        playlist_id (str): Spotify playlist ID from URL path
+    
+    Request Body:
+        spotify_id (str): User's Spotify ID
+        track_uris (list): Array of Spotify track URIs to add
+        
+    Returns:
+        dict: JSON response with number of tracks added.
+        
+    Status Codes:
+        200: Success - tracks added (or no tracks to add)
+        401: Unauthorized - authentication required
+        404: Not found - user doesn't exist
+        500: Internal server error
+    """
     try:
         data = request.get_json()
         spotify_id = data['spotify_id']
@@ -788,7 +999,7 @@ def add_tracks_to_playlist(playlist_id):
                 'status': 'error', 
                 'message': 'User not found',
                 'needs_auth': True
-            }), 404
+            }), HTTP_NOT_FOUND
 
         try:
             # Get fresh token and add tracks
@@ -808,30 +1019,43 @@ def add_tracks_to_playlist(playlist_id):
                 'status': 'error',
                 'message': f'Spotify API error: {str(spotify_error)}',
                 'needs_auth': True
-            }), 401
+            }), HTTP_UNAUTHORIZED
         except Exception as auth_error:
             print(f"Authentication error adding tracks: {auth_error}")
             return jsonify({
                 'status': 'error',
                 'message': str(auth_error),
                 'needs_auth': True
-            }), 401
+            }), HTTP_UNAUTHORIZED
 
     except Exception as e:
         print(f"Error adding tracks to playlist: {e}")
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        return jsonify({'status': 'error', 'message': str(e)}), HTTP_INTERNAL_SERVER_ERROR
 
 @app.route('/api/session_songs/<session_id>', methods=['GET'])
 def get_session_songs(session_id):
-    """
-    Get all songs from a specific swipe session with swipe data
+    """Get all songs from a specific swipe session with swipe data.
+    
+    Retrieves complete track information for all songs shown during a session,
+    including whether they were liked (right swipe) or passed (left swipe).
+    
+    Args:
+        session_id (str): Session identifier from URL path
+    
+    Returns:
+        dict: JSON response with songs array and total count.
+        
+    Status Codes:
+        200: Success - songs returned
+        400: Bad request - missing session ID
+        500: Internal server error
     """
     try:
         if not session_id:
             return jsonify({
                 'status': 'error',
                 'message': 'Session ID is required'
-            }), 400
+            }), HTTP_BAD_REQUEST
         
         db = Database()
         songs = db.get_session_songs(session_id)
@@ -847,7 +1071,7 @@ def get_session_songs(session_id):
         return jsonify({
             'status': 'error',
             'message': f'Failed to get session songs: {str(e)}'
-        }), 500
+        }), HTTP_INTERNAL_SERVER_ERROR
         
 if __name__ == '__main__':
     print("Starting Flask server...")
