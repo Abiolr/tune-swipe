@@ -1,4 +1,15 @@
-// History.jsx
+/**
+ * History - User's swipe session history and analytics component.
+ * 
+ * Displays completed swipe sessions with statistics, genre preferences,
+ * and detailed session views. Provides filtering for liked/passed songs
+ * within individual sessions and overall user analytics.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.user - Current user object with spotify_id
+ * @returns {JSX.Element} History interface with sessions list and analytics
+ */
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaTimes, FaMusic, FaChartBar, FaCalendarAlt, FaListUl, FaPlay, FaExternalLinkAlt } from 'react-icons/fa';
@@ -28,6 +39,10 @@ export default function History({ user }) {
         }
     }, [selectedSession]);
 
+    /**
+     * Fetches user's completed swipe sessions from backend.
+     * Filters for completed sessions only.
+     */
     const fetchUserSessions = async () => {
         try {
             setLoading(true);
@@ -58,6 +73,11 @@ export default function History({ user }) {
         }
     };
 
+    /**
+     * Fetches detailed song data for a specific session.
+     * 
+     * @param {string} sessionId - ID of the session to fetch songs for
+     */
     const fetchSessionSongs = async (sessionId) => {
         try {
             setSongsLoading(true);
@@ -84,6 +104,11 @@ export default function History({ user }) {
         }
     };
 
+    /**
+     * Calculates genre distribution statistics from all sessions.
+     * 
+     * @returns {Array} Array of genre objects with count, sorted by frequency
+     */
     const getGenreStats = () => {
         const genreMap = {};
         
@@ -101,6 +126,11 @@ export default function History({ user }) {
             .map(([genre, count]) => ({ genre, count }));
     };
 
+    /**
+     * Calculates overall session statistics.
+     * 
+     * @returns {Object} Statistics object with totals and ratios
+     */
     const getSessionStats = () => {
         const stats = {
             totalSessions: sessions.length,
@@ -122,6 +152,11 @@ export default function History({ user }) {
         return stats;
     };
 
+    /**
+     * Filters session songs based on active tab selection.
+     * 
+     * @returns {Array} Filtered array of songs
+     */
     const getFilteredSongs = () => {
         if (activeTab === 'liked') {
             return sessionSongs.filter(song => song.is_liked);

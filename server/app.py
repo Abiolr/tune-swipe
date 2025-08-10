@@ -45,7 +45,6 @@ CORS(app,
 if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
     raise ValueError("Missing Spotify credentials. Set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in .env")
 
-
 def search_deezer_preview(track_name, artist_name):
     """Search Deezer API for a track and return its preview URL.
     
@@ -370,7 +369,10 @@ def get_song():
         for genre in genres:
             try:
                 # Simple search with random offset for variety
-                offset = random.randint(0, 200)
+                if random.random() < 0.65:
+                    offset = random.randint(0, 200)
+                else:
+                    offset = random.randint(200, 400)
                 
                 results = sp.search(
                     q=f'genre:"{genre}"',
@@ -491,7 +493,7 @@ def get_song():
             'data': {
                 'tracks': processed,
                 'total': len(processed),
-                'next_offset': None  # Simplified - no pagination
+                'next_offset': None
             }
         })
 

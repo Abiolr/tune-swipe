@@ -1,10 +1,22 @@
-// UserForm.jsx
+/**
+ * UserForm - Session preferences configuration component.
+ * 
+ * Allows users to set genre preferences and target playlist size
+ * before starting a swipe session. Provides genre selection interface
+ * with tag-based UI and playlist size slider. Validates preferences
+ * before navigating to swipe session.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.user - Current user object for context
+ * @returns {JSX.Element} Preferences form with genre selection and playlist sizing
+ */
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import '../styles/UserForm.css';
 
-export default function UserForm({ user }) {
+export default function UserForm() {
     const navigate = useNavigate();
     
     const [preferences, setPreferences] = useState({
@@ -12,6 +24,11 @@ export default function UserForm({ user }) {
         songCount: 20,
     });
 
+    /**
+     * Handles form input changes for non-genre fields.
+     * 
+     * @param {Event} e - Input change event
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPreferences(prev => ({
@@ -20,6 +37,12 @@ export default function UserForm({ user }) {
         }));
     };
 
+    /**
+     * Handles genre selection from dropdown.
+     * Adds genre to preferences if not already selected.
+     * 
+     * @param {Event} e - Select change event
+     */
     const handleGenreChange = (e) => {
         const value = e.target.value.toLowerCase(); 
         if (value && !preferences.genres.includes(value)) {
@@ -32,6 +55,11 @@ export default function UserForm({ user }) {
         }
     };
 
+    /**
+     * Removes a genre from the selected preferences.
+     * 
+     * @param {string} genreToRemove - Genre string to remove from selection
+     */
     const removeGenre = (genreToRemove) => {
         setPreferences(prev => ({
             ...prev,
@@ -39,6 +67,12 @@ export default function UserForm({ user }) {
         }));
     };
 
+    /**
+     * Validates preferences and navigates to swipe session.
+     * Ensures at least one genre is selected and song count is within limits.
+     * 
+     * @param {Event} e - Form submit event
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         if (preferences.genres.length === 0) {

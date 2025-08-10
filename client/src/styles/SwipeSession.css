@@ -651,15 +651,26 @@
    RESPONSIVE DESIGN
    ========================================================================== */
 
-/* Tablet styles */
+/* Tablet styles (768px and below) */
 @media (max-width: 768px) {
     .swipe-session-container {
         padding: 1rem;
         gap: 0.75rem;
+        max-width: 450px;
+    }
+    
+    .session-progress {
+        padding: 0.5rem;
     }
     
     .album-art-container {
         max-width: 250px;
+        min-height: 250px;
+    }
+    
+    .track-content {
+        padding: 1.25rem;
+        border-radius: 16px;
     }
     
     .track-name {
@@ -668,6 +679,10 @@
     
     .track-artist {
         font-size: 0.9rem;
+    }
+    
+    .track-album {
+        font-size: 0.8rem;
     }
     
     .swipe-actions {
@@ -682,24 +697,70 @@
     .swipe-button svg {
         font-size: 1.3rem;
     }
+    
+    .finish-button {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.85rem;
+        min-width: 180px;
+    }
+    
+    .loading-message,
+    .error-message,
+    .no-tracks-message {
+        padding: 1.5rem;
+    }
 }
 
-/* Mobile styles */
+/* Mobile portrait (480px and below) */
 @media (max-width: 480px) {
     .swipe-session-container {
         padding: 0.75rem;
         gap: 0.5rem;
+        max-width: 100%;
         height: 100vh;
         max-height: 100vh;
+        border-radius: 12px;
+    }
+    
+    .session-progress {
+        padding: 0.5rem 0.25rem;
+    }
+    
+    .progress-stats {
+        font-size: 0.75rem;
+    }
+    
+    .progress-bar-container {
+        height: 4px;
+    }
+    
+    .track-card {
+        min-height: calc(100vh - 160px);
+    }
+    
+    .track-content {
+        padding: 1rem;
+        padding-top: 10rem;
+        border-radius: 12px;
+        justify-content: space-evenly;
     }
     
     .album-art-container {
-        max-width: 200px;
+        max-width: 220px;
+        min-height: 220px;
+        border-radius: 6px;
+    }
+    
+    .track-info {
+        margin: 0.75rem 0;
+        gap: 0.25rem;
+        text-align: center;
     }
     
     .track-name {
         font-size: 1.2rem;
         max-height: 2.9rem;
+        line-height: 1.2;
     }
     
     .track-artist {
@@ -710,120 +771,183 @@
         font-size: 0.75rem;
     }
     
+    .explicit-tag {
+        font-size: 0.6rem;
+        padding: 0.05rem 0.25rem;
+    }
+    
+    .audio-controls {
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .progress-container {
+        height: 3px;
+    }
+    
+    .player-controls {
+        gap: 0.75rem;
+        justify-content: center;
+    }
+    
+    .play-button {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+    
+    .play-button svg {
+        font-size: 0.85rem;
+    }
+    
+    .time-display {
+        font-size: 0.7rem;
+        min-width: 5rem;
+        text-align: center;
+    }
+    
+    .no-preview {
+        font-size: 0.7rem;
+        text-align: center;
+    }
+    
+    .swipe-feedback {
+        font-size: 2.5rem;
+        border-radius: 12px;
+    }
+    
+    .swipe-feedback.right {
+        padding-right: 1.5rem;
+    }
+    
+    .swipe-feedback.left {
+        padding-left: 1.5rem;
+    }
+    
     .swipe-actions {
         gap: 2.5rem;
+        padding: 0.25rem 0;
     }
     
     .swipe-button {
         width: 2.75rem;
         height: 2.75rem;
+        box-shadow: 0 2px 8px var(--shadow-light);
     }
     
     .swipe-button svg {
         font-size: 1.2rem;
     }
     
-    .play-button {
-        width: 2rem;
-        height: 2rem;
-    }
-    
-    .play-button svg {
-        font-size: 0.8rem;
+    .session-controls {
+        gap: 0.5rem;
     }
     
     .finish-button {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
         min-width: 160px;
+        border-radius: 20px;
+    }
+    
+    .session-stats {
+        font-size: 0.7rem;
+    }
+    
+    .loading-message,
+    .error-message,
+    .no-tracks-message {
+        padding: 1.5rem;
+        border-radius: 12px;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .loading-message h3,
+    .error-message h3,
+    .no-tracks-message h3 {
+        font-size: 1.3rem;
+    }
+    
+    .loading-message p,
+    .error-message p,
+    .no-tracks-message p {
+        font-size: 0.9rem;
+    }
+    
+    .retry-button,
+    .refresh-button,
+    .back-button {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.85rem;
+        border-radius: 20px;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .error-actions button {
+        width: 100%;
+    }
+}
+
+/* Mobile landscape (max-height: 500px) */
+@media (orientation: landscape) and (max-height: 500px) {
+    .swipe-session-container {
+        padding: 0.5rem;
+        gap: 0.25rem;
+        max-width: 100%;
+        height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto auto;
+    }
+    
+    .session-progress {
+        padding: 0.25rem;
     }
     
     .progress-stats {
         font-size: 0.7rem;
     }
     
-    .session-stats {
-        font-size: 0.65rem;
-    }
-    
-    .track-info {
-        margin: 0.5rem 0;
-        gap: 0.2rem;
-    }
-    
-    .audio-controls {
-        gap: 0.3rem;
-    }
-    
-    .player-controls {
-        gap: 0.75rem;
-    }
-    
-    .time-display {
-        font-size: 0.65rem;
-        min-width: 5rem;
-    }
-    
-    .no-preview {
-        font-size: 0.65rem;
-    }
-    
-    .explicit-tag {
-        font-size: 0.6rem;
-        padding: 0.05rem 0.25rem;
-    }
-}
-
-/* Extra small mobile */
-@media (max-width: 360px) {
-    .swipe-session-container {
-        padding: 0.5rem;
-    }
-    
-    .album-art-container {
-        max-width: 180px;
-    }
-    
-    .track-name {
-        font-size: 1.1rem;
-    }
-    
-    .track-artist {
-        font-size: 0.8rem;
-    }
-    
-    .swipe-actions {
-        gap: 2rem;
-    }
-    
-    .swipe-button {
-        width: 2.5rem;
-        height: 2.5rem;
-    }
-    
-    .swipe-button svg {
-        font-size: 1.1rem;
-    }
-}
-
-/* Landscape orientation adjustments */
-@media (orientation: landscape) and (max-height: 600px) {
-    .swipe-session-container {
-        padding: 0.5rem;
-        gap: 0.3rem;
+    .progress-bar-container {
+        height: 3px;
     }
     
     .track-card {
-        max-height: calc(100vh - 120px);
         min-height: auto;
+        max-height: none;
+    }
+    
+    .track-content {
+        padding: 0.75rem;
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 0.75rem;
+        align-items: center;
     }
     
     .album-art-container {
-        max-width: 150px;
+        max-width: 120px;
+        min-height: 120px;
+        grid-row: 1 / 3;
+        border-radius: 4px;
+    }
+    
+    .track-info {
+        margin: 0;
+        gap: 0.15rem;
+        text-align: left;
+        min-height: auto;
     }
     
     .track-name {
         font-size: 1rem;
+        line-height: 1.1;
+        max-height: 2.2rem;
     }
     
     .track-artist {
@@ -834,8 +958,137 @@
         font-size: 0.7rem;
     }
     
-    .track-info {
-        margin: 0.3rem 0;
+    .explicit-tag {
+        font-size: 0.5rem;
+        padding: 0.05rem 0.2rem;
+    }
+    
+    .audio-controls {
+        gap: 0.25rem;
+        grid-column: 1 / 3;
+        margin-bottom: 0;
+    }
+    
+    .progress-container {
+        height: 2px;
+    }
+    
+    .player-controls {
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+    
+    .play-button {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
+    
+    .play-button svg {
+        font-size: 0.7rem;
+    }
+    
+    .time-display {
+        font-size: 0.6rem;
+        min-width: 4rem;
+    }
+    
+    .no-preview {
+        font-size: 0.6rem;
+    }
+    
+    .swipe-feedback {
+        font-size: 2rem;
+        border-radius: 8px;
+    }
+    
+    .swipe-feedback.right {
+        padding-right: 1rem;
+    }
+    
+    .swipe-feedback.left {
+        padding-left: 1rem;
+    }
+    
+    .swipe-actions {
+        gap: 2rem;
+        padding: 0;
+    }
+    
+    .swipe-button {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+    
+    .swipe-button svg {
+        font-size: 1rem;
+    }
+    
+    .session-controls {
+        gap: 0.25rem;
+    }
+    
+    .finish-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+        min-width: 120px;
+        border-radius: 15px;
+    }
+    
+    .session-stats {
+        font-size: 0.6rem;
+    }
+    
+    .loading-message,
+    .error-message,
+    .no-tracks-message {
+        padding: 1rem;
+        max-width: 250px;
+    }
+    
+    .loading-message h3,
+    .error-message h3,
+    .no-tracks-message h3 {
+        font-size: 1.1rem;
+    }
+    
+    .loading-message p,
+    .error-message p,
+    .no-tracks-message p {
+        font-size: 0.8rem;
+    }
+    
+    .retry-button,
+    .refresh-button,
+    .back-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra small mobile (360px and below) */
+@media (max-width: 360px) {
+    .swipe-session-container {
+        padding: 0.5rem;
+        gap: 0.4rem;
+        border-radius: 8px;
+    }
+    
+    .album-art-container {
+        max-width: 180px;
+        min-height: 180px;
+    }
+    
+    .track-name {
+        font-size: 1.1rem;
+        max-height: 2.6rem;
+    }
+    
+    .track-artist {
+        font-size: 0.8rem;
+    }
+    
+    .track-album {
+        font-size: 0.7rem;
     }
     
     .swipe-actions {
@@ -847,26 +1100,161 @@
         height: 2.5rem;
     }
     
-    .finish-button {
-        padding: 0.3rem 0.7rem;
-        font-size: 0.7rem;
+    .swipe-button svg {
+        font-size: 1.1rem;
     }
     
-    .session-progress,
-    .session-controls {
-        position: relative;
-        padding: 0.5rem;
+    .finish-button {
+        min-width: 140px;
+        font-size: 0.75rem;
+    }
+    
+    .session-stats {
+        font-size: 0.65rem;
     }
 }
 
-/* Ensure proper viewport handling */
-@media (max-height: 700px) {
+/* Very small screens and extreme aspect ratios */
+@media (max-height: 600px) and (orientation: portrait) {
     .track-card {
-        max-height: calc(100vh - 160px);
-        min-height: auto;
+        min-height: calc(100vh - 140px);
+    }
+    
+    .album-art-container {
+        max-width: 160px;
+        min-height: 160px;
     }
     
     .track-info {
-        min-height: 100px;
+        margin: 0.5rem 0;
+    }
+    
+    .swipe-actions {
+        padding: 0.25rem 0;
+    }
+}
+
+/* Touch-friendly adjustments for all mobile devices */
+@media (hover: none) and (pointer: coarse) {
+    .swipe-button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .play-button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .finish-button {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    .back-button,
+    .retry-button,
+    .refresh-button {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    .settings-btn {
+        min-height: 44px;
+    }
+    
+    .logout-btn {
+        min-height: 44px;
+    }
+}
+
+/* Safe area adjustments for devices with notches */
+@supports (padding: max(0px)) {
+    .swipe-session-container {
+        padding-left: max(0.75rem, env(safe-area-inset-left));
+        padding-right: max(0.75rem, env(safe-area-inset-right));
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+    }
+    
+    .history-container {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+        padding-top: max(1rem, env(safe-area-inset-top));
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+    
+    .dashboard {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+        padding-top: max(1rem, env(safe-area-inset-top));
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* High DPI/Retina display adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .progress-bar-container,
+    .session-progress-bar,
+    .progress-container,
+    .progress-bar {
+        transform: translateZ(0);
+        will-change: transform;
+    }
+    
+    .album-art,
+    .song-artwork img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Accessibility improvements for mobile */
+@media (prefers-reduced-motion: reduce) {
+    .swipe-animation-right,
+    .swipe-animation-left {
+        animation: none;
+    }
+    
+    .track-card.dragging {
+        transform: none;
+    }
+    
+    .swipe-button:hover,
+    .action-card:hover,
+    .session-card:hover {
+        transform: none;
+    }
+    
+    .play-button:hover {
+        transform: none;
+    }
+}
+
+/* Dark mode adjustments for OLED screens */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --spotify-darker: #000000;
+        --spotify-black: #0a0a0a;
+    }
+}
+
+/* Print styles (hide interactive elements) */
+@media print {
+    .swipe-actions,
+    .session-controls,
+    .audio-controls,
+    .back-button,
+    .settings-btn,
+    .logout-btn {
+        display: none;
+    }
+    
+    .swipe-session-container,
+    .history-container,
+    .dashboard {
+        background: white;
+        color: black;
+        box-shadow: none;
+        border: 1px solid #ccc;
     }
 }

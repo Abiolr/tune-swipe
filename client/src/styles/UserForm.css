@@ -236,17 +236,194 @@
    RESPONSIVE DESIGN
    ========================================================================== */
 
+/* Tablet styles (768px and below) */
 @media (max-width: 768px) {
     .user-form-container {
+        width: 100%;
         padding: 1rem;
+        height: 100vh;
+        box-sizing: border-box;
     }
     
     .preferences-form {
         padding: 1.5rem;
+        height: calc(100vh - 2rem);
+        overflow-y: auto;
+    }
+    
+    .preferences-form h1 {
+        font-size: 1.6rem;
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-description {
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
     }
     
     .radio-group {
         flex-direction: column;
         gap: 0.75rem;
+    }
+    
+    .selected-tags {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+    
+    .tag {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .submit-btn {
+        padding: 1.25rem;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Mobile portrait (480px and below) */
+@media (max-width: 480px) {
+    .user-form-container {
+        padding: 0.75rem;
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    .back-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .preferences-form {
+        padding: 1rem;
+        height: calc(100vh - 1.5rem);
+        overflow-y: auto;
+        border-radius: 6px;
+    }
+    
+    .preferences-form h1 {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-description {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-group select,
+    .form-group input[type="range"] {
+        padding: 1rem;
+        font-size: 1rem;
+        height: 3.5rem;
+        border-radius: 6px;
+    }
+    
+    .radio-group {
+        gap: 1rem;
+    }
+    
+    .radio-group label {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+    
+    .radio-group input[type="radio"] {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .selected-tags {
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    
+    .tag {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 16px;
+    }
+    
+    .tag-remove {
+        margin-left: 0.75rem;
+        font-size: 1.1rem;
+    }
+    
+    .submit-btn {
+        padding: 1.5rem;
+        font-size: 1.2rem;
+        border-radius: 6px;
+        margin-top: 2rem;
+    }
+    
+    .range-labels {
+        margin-top: -0.5rem;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Mobile landscape (max-height: 500px) */
+@media (orientation: landscape) and (max-height: 500px) {
+    .user-form-container {
+        padding: 0.5rem;
+        height: 100vh;
+    }
+    
+    .preferences-form {
+        padding: 0.75rem;
+        height: calc(100vh - 1rem);
+        overflow-y: auto;
+    }
+    
+    .preferences-form h1 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-description {
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group select,
+    .form-group input[type="range"] {
+        height: 2.5rem;
+        padding: 0.5rem;
+    }
+    
+    .radio-group {
+        flex-direction: row;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .selected-tags {
+        margin-top: 0.5rem;
+    }
+    
+    .submit-btn {
+        padding: 0.75rem;
+        font-size: 1rem;
+        margin-top: 1rem;
     }
 }

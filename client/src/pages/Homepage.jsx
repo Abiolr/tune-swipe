@@ -1,3 +1,16 @@
+/**
+ * Homepage - Landing page component for unauthenticated users.
+ * 
+ * Displays app features, benefits, and how-it-works section.
+ * Provides Spotify authentication entry point with loading states.
+ * Serves as marketing page to introduce users to TuneSwipe functionality.
+ * 
+ * @param {Object} props - Component props
+ * @param {Function} props.spotifyHandling - Function to initiate Spotify OAuth
+ * @param {boolean} props.loadingState - Loading state for authentication process
+ * @returns {JSX.Element} Landing page with features and authentication
+ */
+
 import React from 'react';
 import { FaHandPointer, FaPlayCircle, FaListAlt, FaSpotify, FaUserCheck, FaSlidersH, FaMusic, FaSmile } from 'react-icons/fa';
 import '../styles/App.css';
