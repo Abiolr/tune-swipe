@@ -1,4 +1,13 @@
-// App.jsx
+/**
+ * App - Main application component and router configuration.
+ * 
+ * Manages global application state including user authentication, error handling,
+ * and Spotify OAuth flow. Provides routing configuration and protected routes.
+ * Controls header/footer visibility based on current route.
+ * 
+ * @returns {JSX.Element} Complete application with routing and authentication
+ */
+
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { BACKEND_URL } from './config';
@@ -12,16 +21,33 @@ import SwipeSession from './pages/SwipeSession';
 import PlaylistCreation from './pages/PlaylistCreation';
 import './styles/App.css';
 
+export default function App() {
+    return (
+        <Router>
+            <AppContent />
+        </Router>
+    );
+}
+
+/**
+ * AppContent - Main application content with routing logic.
+ * 
+ * Handles user state management, Spotify authentication flow, and route protection.
+ * Manages localStorage persistence for user data and error state management.
+ * 
+ * @returns {JSX.Element} Application content with routing and state management
+ */
 function AppContent() {
     const location = useLocation();
     
+    // Initialize user state from localStorage
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('tuneswipe_user');
         return savedUser ? JSON.parse(savedUser) : null;
     });
     const [error, setError] = useState(null);
 
-    // Boolean to control header/footer display
+    // Determine header/footer visibility based on route
     const showHeaderFooter = ['/', '/dashboard', '/history'].includes(location.pathname);
 
     // Persist user to localStorage
@@ -33,6 +59,10 @@ function AppContent() {
         }
     }, [user]);
 
+    /**
+     * Initiates Spotify OAuth login flow.
+     * Fetches authorization URL from backend and redirects user.
+     */
     const handleSpotifyLogin = async () => {
         setError(null);
         
@@ -69,6 +99,10 @@ function AppContent() {
         }
     };
 
+    /**
+     * Handles user logout process.
+     * Opens Spotify logout in new tab and clears local state.
+     */
     const handleLogout = () => {
         window.open('https://accounts.spotify.com/en/logout', '_blank');
         
@@ -134,7 +168,13 @@ function AppContent() {
         handleAuth();
     }, []);
 
-    // Protected Route Component
+    /**
+     * ProtectedRoute - Route wrapper for authenticated pages.
+     * 
+     * @param {Object} props - Component props
+     * @param {JSX.Element} props.children - Child components to render if authenticated
+     * @returns {JSX.Element} Protected content or redirect to login
+     */
     const ProtectedRoute = ({ children }) => {
         return user ? children : <Navigate to="/" replace />;
     };
@@ -228,13 +268,5 @@ function AppContent() {
 
             {showHeaderFooter && <Footer />}
         </div>
-    );
-}
-
-export default function App() {
-    return (
-        <Router>
-            <AppContent />
-        </Router>
     );
 }

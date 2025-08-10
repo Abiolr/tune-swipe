@@ -1,4 +1,15 @@
-// PlaylistCreation.jsx
+/**
+ * PlaylistCreation - Spotify playlist creation and management component.
+ * 
+ * Handles final playlist creation after swipe session completion.
+ * Manages authentication verification, playlist naming, and Spotify API integration.
+ * Provides success/error handling with user feedback and navigation options.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.user - Current user object with spotify_id and display_name
+ * @returns {JSX.Element} Playlist creation interface with form and status feedback
+ */
+
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaSpotify, FaCheck, FaSpinner, FaExclamationTriangle } from 'react-icons/fa';
@@ -10,7 +21,7 @@ export default function PlaylistCreation({ user }) {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // Initialize state - try multiple sources with better restoration logic
+    // Initialize state from location state with fallbacks
     const [likedSongs, setLikedSongs] = useState(() => {
         // First try location state
         if (location.state?.likedSongs?.length > 0) {
@@ -78,6 +89,10 @@ export default function PlaylistCreation({ user }) {
         }
     }, [user, playlistName, likedSongs.length]);
 
+    /**
+     * Verifies user authentication status for playlist creation.
+     * Checks if user tokens are still valid for Spotify API calls.
+     */
     const checkAuthStatus = async () => {
         if (!user?.spotify_id) {
             setError('User authentication required');
@@ -107,6 +122,10 @@ export default function PlaylistCreation({ user }) {
         }
     };
 
+    /**
+     * Creates Spotify playlist with selected songs.
+     * Handles playlist creation and track addition in separate API calls.
+     */
     const handleCreatePlaylist = async () => {
         if (!playlistName.trim()) {
             setError('Please enter a playlist name');

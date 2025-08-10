@@ -1,3 +1,18 @@
+/**
+ * Dashboard - Main user dashboard component.
+ * 
+ * Displays user greeting, account settings, and action cards for navigation.
+ * Provides toggle between main dashboard view and account settings view.
+ * Handles user logout and navigation to swipe session creation.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.userDetails - User information object containing display_name, email, etc.
+ * @param {Function} props.userState - State setter function for user data
+ * @param {Function} props.errorState - State setter function for error messages
+ * @param {Function} props.onLogout - Callback function for logout action
+ * @returns {JSX.Element} Dashboard interface with settings and navigation options
+ */
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -16,6 +31,10 @@ export default function Dashboard({
     const [showSettings, setShowSettings] = useState(false);
     const navigate = useNavigate();
 
+    /**
+     * Handles user logout process.
+     * Executes parent logout callback, clears state, and navigates to home.
+     */
     const handleLogout = () => {
         if (onLogout) onLogout();
         userState(null);

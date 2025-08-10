@@ -1,4 +1,15 @@
-// SwipeSession.jsx
+/**
+ * SwipeSession - Interactive music discovery and swiping component.
+ * 
+ * Main swiping interface where users discover and rate songs.
+ * Handles audio playback, swipe animations, session management,
+ * and progress tracking. Integrates with backend for song fetching and swipe recording.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.user - Current user object with spotify_id
+ * @returns {JSX.Element} Swipe interface with audio player and controls
+ */
+
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaPlay, FaPause, FaHeart, FaTimes, FaSpinner, FaExclamationTriangle, FaRedo } from 'react-icons/fa';
@@ -41,6 +52,10 @@ export default function SwipeSession({ user }) {
         };
     }, [preferences, navigate]);
 
+    /**
+     * Initializes swipe session by creating backend session and fetching tracks.
+     * Sets up session preferences and initial track data.
+     */
     const initializeSession = async () => {
         try {
             setError(null);
@@ -74,6 +89,11 @@ export default function SwipeSession({ user }) {
         }
     };
 
+    /**
+     * Fetches music tracks based on user preferences.
+     * 
+     * @param {string} sessionIdParam - Optional session ID parameter
+     */
     const fetchTracks = async (sessionIdParam = null) => {
         try {
             setIsLoading(true);
@@ -133,7 +153,10 @@ export default function SwipeSession({ user }) {
         }
     }, [currentTrack]);
 
-    // Modified play/pause handler
+    /**
+     * Handles audio play/pause functionality with progress tracking.
+     * Manages 30-second preview limitations and progress visualization.
+     */
     const handlePlayPause = () => {
         if (!audioRef.current || !currentTrack?.previewUrl) return;
         
@@ -163,6 +186,12 @@ export default function SwipeSession({ user }) {
         }
     };
 
+    /**
+     * Records user swipe decision to backend.
+     * 
+     * @param {string} direction - 'left' or 'right' swipe direction
+     * @param {Object} track - Track object being swiped on
+     */
     const recordSwipe = async (direction, track) => {
         if (!sessionId || !track) return;
         
@@ -181,7 +210,13 @@ export default function SwipeSession({ user }) {
         }
     };
 
-    const completeSession = async (finalLikedSongs) => {
+    /**
+     * Completes the current swipe session.
+     * Marks session as completed in backend database.
+     * 
+     * @param {Array} finalLikedSongs - Final array of liked songs
+     */
+    const completeSession = async () => {
         if (!sessionId) return;
         
         try {
@@ -195,6 +230,12 @@ export default function SwipeSession({ user }) {
         }
     };
 
+    /**
+     * Handles swipe gesture and navigation logic.
+     * Manages animations, state updates, and session completion.
+     * 
+     * @param {string} direction - 'left' (pass) or 'right' (like) swipe direction
+     */
     const handleSwipe = async (direction) => {
         // Clean up audio
         if (audioRef.current) {
@@ -253,6 +294,9 @@ export default function SwipeSession({ user }) {
         }, 500);
     };
 
+    /**
+     * Handles early session completion with current liked songs.
+     */
     const handleFinishEarly = async () => {
         await completeSession(likedSongs);
         navigate('/create-playlist', { state: { likedSongs } });
@@ -446,6 +490,12 @@ export default function SwipeSession({ user }) {
     );
 }
 
+/**
+ * Formats seconds into MM:SS format for audio time display.
+ * 
+ * @param {number} seconds - Time in seconds to format
+ * @returns {string} Formatted time string (e.g., "1:23")
+ */
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
