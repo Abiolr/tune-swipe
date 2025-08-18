@@ -131,10 +131,10 @@ The application uses a sophisticated relational database schema with optimized i
 ### Custom SQL Queries
 ```sql
 -- Session progress analytics with aggregation
-get_session_progress.sql    # Complex GROUP BY with CASE statements
-get_session_songs.sql       # JOIN across 3 tables with ordering
-get_user_liked_songs.sql    # Window functions for song ranking
-get_user_sessions.sql       # Comprehensive session analytics
+get_session_progress.sql    
+get_session_songs.sql       
+get_user_liked_songs.sql    
+get_user_sessions.sql       
 ```
 
 ## 🔌 API Endpoints
@@ -162,17 +162,34 @@ get_user_sessions.sql       # Comprehensive session analytics
 
 ## 🎮 User Flow
 
+
+
 1. **Landing Page**: Introduction and Spotify login
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 43 22 PM" src="https://github.com/user-attachments/assets/25e469c8-409c-445d-91dd-3bb4d075eda9" />
+
 2. **Authentication**: Secure OAuth2 flow with Spotify
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 45 51 PM" src="https://github.com/user-attachments/assets/b227948c-ebe2-4274-bc2f-3991f3af2ec5" />
+
 3. **Dashboard**: User profile and navigation hub
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 39 12 PM" src="https://github.com/user-attachments/assets/0dfcb82c-40ba-46f1-b586-c7b01aec6cce" />
+
 4. **Session Setup**: Choose genres and target playlist size (5-50 songs)
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 39 30 PM" src="https://github.com/user-attachments/assets/90d0d85d-8484-4582-a249-ff825ba2f6e7" />
+
 5. **Swiping Interface**: 
    - Swipe right (❤️) to like songs
    - Swipe left (✖️) to skip
    - Listen to 30-second previews
    - Track progress in real-time
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 41 42 PM" src="https://github.com/user-attachments/assets/2cd70580-66fa-4d51-ac15-a73afbdcfd2e" />
+
 6. **Playlist Creation**: Automatic Spotify playlist generation
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 42 03 PM" src="https://github.com/user-attachments/assets/62a42883-bca3-4651-962c-eeb62b978991" />
+
 7. **History**: View past sessions with detailed analytics
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 39 49 PM" src="https://github.com/user-attachments/assets/305561cb-b129-45af-b60c-0013d68b004a" />
+
+<img width="1470" height="829" alt="Screenshot 2025-08-18 at 3 40 00 PM" src="https://github.com/user-attachments/assets/3465ade2-c343-4e20-a3c6-fea77ced1045" />
 
 ## 📁 Project Structure
 
