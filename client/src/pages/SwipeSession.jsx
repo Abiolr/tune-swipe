@@ -254,9 +254,12 @@ export default function SwipeSession({ user }) {
         // Record swipe
         await recordSwipe(direction, currentTrack);
         
-        // Animation
+        // Animation with color hue
         if (trackCardRef.current) {
+            // Add swipe animation class
             trackCardRef.current.classList.add(`swipe-animation-${direction}`);
+            // Add color hue class for visual feedback
+            trackCardRef.current.classList.add(`swipe-hue-${direction}`);
         }
         
         swipeTimeout.current = setTimeout(async () => {
@@ -283,15 +286,17 @@ export default function SwipeSession({ user }) {
                 return;
             }
             
-            // Reset animation
+            // Reset animation and color hue classes
             setSwipeDirection(null);
             if (trackCardRef.current) {
                 trackCardRef.current.classList.remove(
                     'swipe-animation-left',
-                    'swipe-animation-right'
+                    'swipe-animation-right',
+                    'swipe-hue-left',
+                    'swipe-hue-right'
                 );
             }
-        }, 500);
+        }, 600);
     };
 
     /**
@@ -377,13 +382,6 @@ export default function SwipeSession({ user }) {
                 ref={trackCardRef}
             >
                 <div className="track-content">
-                    <div className="swipe-feedback right">
-                        <FaHeart size={48} />
-                    </div>
-                    <div className="swipe-feedback left">
-                        <FaTimes size={48} />
-                    </div>
-
                     <div className="album-art-container">
                         <img 
                             src={currentTrack.image_url} 
