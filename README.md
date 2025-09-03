@@ -1,6 +1,6 @@
 # TuneSwipe 🎵
 
-A sophisticated music discovery platform that combines the intuitive swipe interface of modern dating apps with intelligent Spotify integration to create personalized playlists through machine learning-enhanced recommendations.
+A sophisticated music discovery platform that combines the intuitive swipe interface of modern dating apps with intelligent Spotify integration to create personalized playlists through search recommendations.
 
 ## 🎯 Overview
 
