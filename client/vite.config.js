@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
         '/api': {
           target: isLocal
             ? 'http://127.0.0.1:5000'
-            : 'https://tune-swipe.onrender.com',
+            : 'https://tune-swipe-production.up.railway.app',
           changeOrigin: true,
           secure: false,
           rewrite: path => path.replace(/^\/api/, '')
