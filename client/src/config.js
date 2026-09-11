@@ -11,7 +11,7 @@ export const FRONTEND_URL = isLocal
 
 export const BACKEND_URL = isLocal
   ? 'http://127.0.0.1:5000'
-  : 'https://tune-swipe.onrender.com';
+  : 'https://tune-swipe-production.up.railway.app';
 
 console.log('[CONFIG DEBUG] FRONTEND_URL:', FRONTEND_URL);
 console.log('[CONFIG DEBUG] BACKEND_URL:', BACKEND_URL);
