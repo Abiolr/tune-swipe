@@ -27,7 +27,7 @@ if IS_LOCAL:
     BACKEND_URL = "http://127.0.0.1:5000"
 else:
     FRONTEND_URL = "https://tune-swipe.vercel.app"
-    BACKEND_URL = "https://tune-swipe.onrender.com"
+    BACKEND_URL = "https://tune-swipe-production.up.railway.app/"
 
 SPOTIFY_REDIRECT_URI = f"{BACKEND_URL}/callback"
 
